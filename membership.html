@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Join The Human Experience membership for private podcast episodes, ad-free listening, live conversations, and a deeper member archive."
+    />
+    <title>The Human Experience Membership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500,650&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #f7f3ea;
+        --muted: rgba(247, 243, 234, 0.72);
+        --line: rgba(247, 243, 234, 0.16);
+        --deep: #111317;
+        --panel: rgba(20, 23, 28, 0.82);
+        --panel-strong: rgba(21, 25, 30, 0.96);
+        --moss: #527a66;
+        --moss-bright: #83b098;
+        --gold: #d7bf83;
+        --paper: #efe4cd;
+        --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+        --max: 1160px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(17, 19, 23, 0.78), #111317 62%),
+          url("https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=2200&q=80")
+            center top / cover fixed;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(17, 19, 23, 0.82), rgba(17, 19, 23, 0.48) 50%, rgba(17, 19, 23, 0.84)),
+          radial-gradient(820px 520px at 18% 10%, rgba(131, 176, 152, 0.12), transparent 64%);
+        z-index: -1;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .site-shell {
+        width: min(var(--max), calc(100% - 36px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(18px);
+        background: rgba(17, 19, 23, 0.84);
+        border-bottom: 1px solid rgba(246, 241, 231, 0.1);
+      }
+
+      .topbar-inner {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: var(--gold);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .brand-text {
+        display: grid;
+        line-height: 1.05;
+      }
+
+      .brand-title {
+        font-family: Fraunces, Georgia, serif;
+        font-weight: 650;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 15px;
+      }
+
+      .brand-subtitle {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-links a {
+        padding: 10px 12px;
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+
+      .button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border: 1px solid rgba(217, 194, 141, 0.58);
+        border-radius: 4px;
+        padding: 10px 16px;
+        color: #17140f;
+        background: var(--paper);
+        text-decoration: none;
+        font-weight: 800;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        background: #f6ebd4;
+      }
+
+      .button.secondary {
+        color: var(--ink);
+        background: rgba(246, 241, 231, 0.06);
+        border-color: var(--line);
+        box-shadow: none;
+      }
+
+      .hero {
+        min-height: calc(100vh - 122px);
+        display: grid;
+        align-items: center;
+        padding: 34px 0 30px;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 42px;
+        height: 1px;
+        background: var(--gold);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: Fraunces, Georgia, serif;
+        font-weight: 650;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 780px;
+        font-size: clamp(2.75rem, 5.1vw, 4.7rem);
+        line-height: 0.98;
+      }
+
+      .hero-copy {
+        max-width: 720px;
+        margin: 18px 0 0;
+        color: rgba(246, 241, 231, 0.84);
+        font-size: clamp(1rem, 1.45vw, 1.18rem);
+      }
+
+      .hero-actions {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .trust-row {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        color: var(--muted);
+      }
+
+      .trust-pill {
+        border: 1px solid rgba(246, 241, 231, 0.14);
+        border-radius: 4px;
+        background: rgba(17, 19, 23, 0.58);
+        padding: 9px 12px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .hero-note {
+        margin-top: 12px;
+        max-width: 520px;
+        color: rgba(246, 241, 231, 0.68);
+        font-size: 14px;
+      }
+
+      .section {
+        padding: 62px 0;
+        border-top: 1px solid rgba(246, 241, 231, 0.1);
+      }
+
+      .section-header {
+        max-width: 780px;
+        margin-bottom: 28px;
+      }
+
+      .section-kicker {
+        margin: 0 0 8px;
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        font-size: clamp(2rem, 3.8vw, 3.3rem);
+        line-height: 1.06;
+      }
+
+      .section-header p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .benefit-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .benefit {
+        min-height: 196px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(20, 23, 28, 0.74);
+        padding: 20px;
+      }
+
+      .benefit-icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(217, 194, 141, 0.45);
+        border-radius: 4px;
+        color: var(--gold);
+        font-weight: 900;
+        margin-bottom: 18px;
+      }
+
+      .benefit h3 {
+        font-size: 21px;
+      }
+
+      .benefit p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      .plans {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .plan {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        min-height: 560px;
+      }
+
+      .plan.featured {
+        background:
+          linear-gradient(180deg, rgba(82, 122, 102, 0.18), rgba(21, 25, 30, 0.96)),
+          var(--panel-strong);
+        border-color: rgba(217, 194, 141, 0.52);
+        box-shadow: var(--shadow);
+      }
+
+      .badge {
+        width: fit-content;
+        margin-bottom: 18px;
+        border: 1px solid rgba(217, 194, 141, 0.45);
+        border-radius: 4px;
+        color: var(--gold);
+        padding: 5px 9px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .plan h3 {
+        font-size: 28px;
+      }
+
+      .price {
+        margin: 14px 0 2px;
+        font-size: 40px;
+        line-height: 1;
+        font-weight: 800;
+      }
+
+      .price span {
+        color: var(--muted);
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .plan-desc {
+        min-height: 50px;
+        color: var(--muted);
+      }
+
+      .features {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 22px;
+        display: grid;
+        gap: 11px;
+      }
+
+      .features li {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 9px;
+        color: rgba(246, 241, 231, 0.83);
+      }
+
+      .features li::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        margin-top: 9px;
+        border-radius: 50%;
+        background: var(--moss-bright);
+        color: var(--moss-bright);
+      }
+
+      .plan .button {
+        width: 100%;
+        margin-top: auto;
+      }
+
+      .plan-actions {
+        margin-top: auto;
+        display: grid;
+        gap: 10px;
+      }
+
+      .plan-actions .button {
+        width: 100%;
+      }
+
+      .button:disabled {
+        cursor: not-allowed;
+        opacity: 0.58;
+        transform: none;
+      }
+
+      .checkout-status {
+        display: none;
+        margin: 0 0 18px;
+        border: 1px solid rgba(131, 176, 152, 0.42);
+        border-radius: 6px;
+        background: rgba(82, 122, 102, 0.18);
+        padding: 14px 16px;
+        color: rgba(246, 241, 231, 0.9);
+        font-weight: 700;
+      }
+
+      .checkout-status.is-visible {
+        display: block;
+      }
+
+      .payment-note {
+        margin: 12px 0 0;
+        color: rgba(246, 241, 231, 0.62);
+        font-size: 13px;
+      }
+
+      .checkout-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: none;
+        place-items: center;
+        padding: 22px;
+        background: rgba(8, 10, 13, 0.72);
+        backdrop-filter: blur(14px);
+      }
+
+      .checkout-modal.is-open {
+        display: grid;
+      }
+
+      .checkout-dialog {
+        width: min(520px, 100%);
+        border: 1px solid rgba(246, 241, 231, 0.16);
+        border-radius: 8px;
+        background: #15191e;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+      }
+
+      .checkout-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 22px 22px 0;
+      }
+
+      .checkout-head h2 {
+        font-size: 30px;
+      }
+
+      .close-button {
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .checkout-form {
+        display: grid;
+        gap: 14px;
+        padding: 22px;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .field label {
+        color: rgba(246, 241, 231, 0.78);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .field input {
+        min-height: 46px;
+        width: 100%;
+        border: 1px solid rgba(246, 241, 231, 0.18);
+        border-radius: 4px;
+        padding: 10px 12px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.06);
+        font: inherit;
+      }
+
+      .payment-choice {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .payment-choice label {
+        border: 1px solid rgba(246, 241, 231, 0.16);
+        border-radius: 6px;
+        padding: 13px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.04);
+        font-weight: 800;
+      }
+
+      .payment-choice input {
+        margin-right: 8px;
+      }
+
+      .checkout-error {
+        display: none;
+        margin: 0;
+        border: 1px solid rgba(255, 145, 116, 0.4);
+        border-radius: 4px;
+        background: rgba(111, 35, 25, 0.28);
+        padding: 10px 12px;
+        color: #ffd6ca;
+        font-size: 14px;
+      }
+
+      .checkout-error.is-visible {
+        display: block;
+      }
+
+      .experience {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .episode-stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .episode {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(20, 23, 28, 0.74);
+        padding: 16px;
+      }
+
+      .episode p {
+        margin: 6px 0 0;
+        color: var(--muted);
+      }
+
+      .quote {
+        border-left: 2px solid var(--gold);
+        padding-left: 24px;
+      }
+
+      .quote blockquote {
+        margin: 0;
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(2rem, 4vw, 4.4rem);
+        line-height: 1.04;
+      }
+
+      .quote cite {
+        display: block;
+        margin-top: 18px;
+        color: var(--muted);
+        font-style: normal;
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(18, 20, 25, 0.76);
+        padding: 18px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 800;
+        list-style: none;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details p {
+        margin: 12px 0 0;
+        color: var(--muted);
+      }
+
+      .final-cta {
+        margin-bottom: 76px;
+        padding: 42px;
+        border: 1px solid rgba(217, 194, 141, 0.42);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(82, 122, 102, 0.2), rgba(215, 191, 131, 0.08)),
+          rgba(18, 20, 25, 0.9);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .final-cta p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        max-width: 700px;
+      }
+
+      .sticky-join {
+        display: none;
+      }
+
+      @media (max-width: 980px) {
+        .experience,
+        .final-cta {
+          grid-template-columns: 1fr;
+        }
+
+        .benefit-grid,
+        .plans,
+        .faq-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        body {
+          background-attachment: scroll;
+        }
+
+        .site-shell {
+          width: min(100% - 28px, var(--max));
+        }
+
+        .topbar-inner {
+          min-height: 64px;
+        }
+
+        .brand-subtitle,
+        .nav-links a:not(.button) {
+          display: none;
+        }
+
+        .nav-links .button {
+          min-height: 40px;
+          padding: 9px 12px;
+          font-size: 13px;
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 30px 0 18px;
+        }
+
+        h1 {
+          font-size: clamp(2.45rem, 10.4vw, 3.25rem);
+        }
+
+        .benefit-grid,
+        .plans,
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-actions .button {
+          width: 100%;
+        }
+
+        .trust-row {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          padding: 48px 0;
+        }
+
+        .plan {
+          min-height: 0;
+        }
+
+        .final-cta {
+          padding: 24px;
+          margin-bottom: 96px;
+        }
+
+        .final-cta .button {
+          width: 100%;
+        }
+
+        .sticky-join {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 20;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 12px;
+          align-items: center;
+          padding: 12px 14px;
+          border-top: 1px solid var(--line);
+          background: rgba(16, 17, 21, 0.94);
+          backdrop-filter: blur(16px);
+        }
+
+        .sticky-join span {
+          display: block;
+          color: var(--muted);
+          font-size: 12px;
+        }
+
+        .sticky-join strong {
+          display: block;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="site-shell topbar-inner">
+        <a class="brand" href="https://thehumanxp.com" aria-label="The Human Experience home">
+          <span class="brand-mark">HXP</span>
+          <span class="brand-text">
+            <span class="brand-title">The Human Experience</span>
+            <span class="brand-subtitle">Independent conversations on being human</span>
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Membership navigation">
+          <a href="#benefits">Benefits</a>
+          <a href="#plans">Plans</a>
+          <a href="#faq">FAQ</a>
+          <a class="button" href="#plans">Join</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="site-shell">
+          <div>
+            <p class="eyebrow">Member-supported podcast</p>
+            <h1>Deeper conversations for thoughtful listeners.</h1>
+            <p class="hero-copy">
+              Become a member of The Human Experience for ad-free listening, private episodes,
+              member conversations, and a curated archive beyond the public feed.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#plans">Choose membership</a>
+              <a class="button secondary" href="#benefits">View benefits</a>
+            </div>
+            <div class="trust-row" aria-label="Membership highlights">
+              <span class="trust-pill">Cancel anytime</span>
+              <span class="trust-pill">Private podcast feed</span>
+              <span class="trust-pill">Listener-funded and independent</span>
+            </div>
+            <p class="hero-note">Membership starts at $5/month. Cancel anytime.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="benefits" class="section">
+        <div class="site-shell">
+          <div class="section-header">
+            <p class="section-kicker">What members unlock</p>
+            <h2>A more complete way to listen.</h2>
+            <p>
+              Membership brings the show into a focused private feed with fewer interruptions,
+              more context, and direct access to live member sessions.
+            </p>
+          </div>
+
+          <div class="benefit-grid">
+            <article class="benefit">
+              <div class="benefit-icon">01</div>
+              <h3>Private feed</h3>
+              <p>Listen to member-only episodes and extended cuts inside the podcast app you already use.</p>
+            </article>
+            <article class="benefit">
+              <div class="benefit-icon">02</div>
+              <h3>Ad-free archive</h3>
+              <p>Move through the back catalog without breaks, sponsor reads, or public-feed limits.</p>
+            </article>
+            <article class="benefit">
+              <div class="benefit-icon">03</div>
+              <h3>Live rooms</h3>
+              <p>Join monthly conversations, ask questions, and hear what other members are exploring.</p>
+            </article>
+            <article class="benefit">
+              <div class="benefit-icon">04</div>
+              <h3>Early access</h3>
+              <p>Get new releases, notes, and invitations before they land in the public feed.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="plans" class="section">
+        <div class="site-shell">
+          <div class="section-header">
+            <p class="section-kicker">Membership levels</p>
+            <h2>Choose your membership.</h2>
+            <p>Select the plan that fits how you listen. Every tier supports independent production.</p>
+          </div>
+          <p id="checkout-status" class="checkout-status" role="status"></p>
+
+          <div class="plans">
+            <article class="plan" data-plan-card>
+              <span class="badge">Start here</span>
+              <h3>Member</h3>
+              <div class="price">$5 <span>/ month</span></div>
+              <p class="plan-desc">Support the show and receive the core member benefits.</p>
+              <ul class="features">
+                <li>Early access to new episodes</li>
+                <li>Member notes and reflections</li>
+                <li>Community invitations</li>
+                <li>Support independent production</li>
+              </ul>
+              <div class="plan-actions">
+                <button class="button secondary" type="button" data-checkout-plan="1" data-plan-name="Member" data-plan-price="$5 / month">
+                Start membership
+                </button>
+              </div>
+            </article>
+
+            <article class="plan featured" data-plan-card>
+              <span class="badge">Most popular</span>
+              <h3>Inner Circle</h3>
+              <div class="price">$10 <span>/ month</span></div>
+              <p class="plan-desc">The full private listening experience with the archive and live sessions.</p>
+              <ul class="features">
+                <li>Ad-free private podcast feed</li>
+                <li>Member-only episodes and extended cuts</li>
+                <li>Full bonus archive</li>
+                <li>Monthly live Q&amp;A rooms</li>
+                <li>Early releases and behind-the-scenes notes</li>
+              </ul>
+              <div class="plan-actions">
+                <button class="button" type="button" data-checkout-plan="2" data-plan-name="Inner Circle" data-plan-price="$10 / month">
+                Join Inner Circle
+                </button>
+              </div>
+            </article>
+
+            <article class="plan" data-plan-card>
+              <span class="badge">Best value</span>
+              <h3>Annual</h3>
+              <div class="price">$100 <span>/ year</span></div>
+              <p class="plan-desc">A year of Inner Circle access with two months included.</p>
+              <ul class="features">
+                <li>Everything in Inner Circle</li>
+                <li>Two months free compared with monthly</li>
+                <li>Priority questions for live rooms</li>
+                <li>Annual supporter recognition</li>
+              </ul>
+              <div class="plan-actions">
+                <button class="button secondary" type="button" data-checkout-plan="3" data-plan-name="Annual" data-plan-price="$100 / year">
+                Go annual
+                </button>
+              </div>
+            </article>
+          </div>
+          <p class="payment-note">
+            Payments are started through the secure backend API. Configure PayPal plan IDs for each tier before going live.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="site-shell experience">
+          <div class="episode-stack" aria-label="Example member releases">
+            <article class="episode">
+              <strong>Private Episode</strong>
+              <p>Follow-up reflections, unreleased context, and the questions that continue after recording.</p>
+            </article>
+            <article class="episode">
+              <strong>Live Member Room</strong>
+              <p>A monthly member session for questions around consciousness, meaning, creativity, and change.</p>
+            </article>
+            <article class="episode">
+              <strong>Extended Cut</strong>
+              <p>Longer releases for conversations that needed more silence, more context, and more room.</p>
+            </article>
+          </div>
+
+          <div class="quote">
+            <blockquote>Built for people who want the full conversation.</blockquote>
+            <cite>The Human Experience membership</cite>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="section">
+        <div class="site-shell">
+          <div class="section-header">
+            <p class="section-kicker">Questions</p>
+            <h2>Membership details.</h2>
+          </div>
+
+          <div class="faq-grid">
+            <details>
+              <summary>How do I listen to the private feed?</summary>
+              <p>
+                After joining, members receive a private feed link that can be added to most podcast apps.
+              </p>
+            </details>
+            <details>
+              <summary>Can I cancel anytime?</summary>
+              <p>Yes. Membership is month-to-month unless you choose the annual plan.</p>
+            </details>
+            <details>
+              <summary>Do I need a new app?</summary>
+              <p>No. The private feed is designed to work with the podcast app you already prefer.</p>
+            </details>
+            <details>
+              <summary>Where does the money go?</summary>
+              <p>
+                Membership supports independent production, research time, guest booking, editing, hosting,
+                and the deeper member archive.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="site-shell final-cta" aria-label="Join The Human Experience">
+        <div>
+          <p class="section-kicker">Ready when you are</p>
+          <h2>Start listening privately.</h2>
+          <p>Join today for the member archive, ad-free episodes, and upcoming live sessions.</p>
+        </div>
+        <a class="button" href="#plans">Choose a plan</a>
+      </section>
+    </main>
+
+    <aside class="sticky-join" aria-label="Mobile join prompt">
+      <div>
+        <strong>Inner Circle</strong>
+        <span>$10/month · cancel anytime</span>
+      </div>
+      <a class="button" href="#plans">Join</a>
+    </aside>
+
+    <div id="checkout-modal" class="checkout-modal" aria-hidden="true">
+      <div class="checkout-dialog" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+        <div class="checkout-head">
+          <div>
+            <p class="section-kicker">Secure checkout</p>
+            <h2 id="checkout-title">Join The Human Experience</h2>
+            <p id="checkout-plan-summary" class="hero-note"></p>
+          </div>
+          <button class="close-button" type="button" data-close-checkout aria-label="Close checkout">×</button>
+        </div>
+        <form id="checkout-form" class="checkout-form">
+          <input type="hidden" id="checkout-plan-id" name="planId" />
+          <div class="field">
+            <label for="member-name">Name</label>
+            <input id="member-name" name="memberName" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="member-email">Email</label>
+            <input id="member-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="payment-choice" aria-label="Payment method">
+            <label>
+              <input type="radio" name="provider" value="paypal" checked />
+              PayPal
+            </label>
+            <label>
+              <input type="radio" name="provider" value="stripe" />
+              Card
+            </label>
+          </div>
+          <p id="checkout-error" class="checkout-error"></p>
+          <button id="checkout-submit" class="button" type="submit">Continue to payment</button>
+          <p class="payment-note">
+            The Human Experience does not store card details. PayPal and card checkout are completed with the payment provider.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const isLocalStaticSite =
+        ["localhost", "127.0.0.1"].includes(window.location.hostname) && window.location.port !== "3000";
+      const apiBase = isLocalStaticSite ? "http://localhost:3000" : "";
+      const checkoutModal = document.querySelector("#checkout-modal");
+      const checkoutForm = document.querySelector("#checkout-form");
+      const checkoutError = document.querySelector("#checkout-error");
+      const checkoutSubmit = document.querySelector("#checkout-submit");
+      const checkoutStatus = document.querySelector("#checkout-status");
+      const planSummary = document.querySelector("#checkout-plan-summary");
+      const planIdInput = document.querySelector("#checkout-plan-id");
+
+      function setCheckoutError(message) {
+        checkoutError.textContent = message || "";
+        checkoutError.classList.toggle("is-visible", Boolean(message));
+      }
+
+      function openCheckout(button) {
+        planIdInput.value = button.dataset.checkoutPlan;
+        planSummary.textContent = `${button.dataset.planName} · ${button.dataset.planPrice}`;
+        setCheckoutError("");
+        checkoutModal.classList.add("is-open");
+        checkoutModal.setAttribute("aria-hidden", "false");
+        document.querySelector("#member-name").focus();
+      }
+
+      function closeCheckout() {
+        checkoutModal.classList.remove("is-open");
+        checkoutModal.setAttribute("aria-hidden", "true");
+      }
+
+      async function startCheckout(payload) {
+        const endpoint =
+          payload.provider === "paypal" ? "/api/paypal/subscription" : "/api/stripe/checkout-session";
+        const response = await fetch(`${apiBase}${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Unable to start checkout");
+        }
+
+        return result.data;
+      }
+
+      document.querySelectorAll("[data-checkout-plan]").forEach((button) => {
+        button.addEventListener("click", () => openCheckout(button));
+      });
+
+      document.querySelectorAll("[data-close-checkout]").forEach((button) => {
+        button.addEventListener("click", closeCheckout);
+      });
+
+      checkoutModal.addEventListener("click", (event) => {
+        if (event.target === checkoutModal) {
+          closeCheckout();
+        }
+      });
+
+      checkoutForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setCheckoutError("");
+        checkoutSubmit.disabled = true;
+        checkoutSubmit.textContent = "Opening secure checkout...";
+
+        const formData = new FormData(checkoutForm);
+        const payload = {
+          planId: Number(formData.get("planId")),
+          memberName: formData.get("memberName"),
+          email: formData.get("email"),
+          provider: formData.get("provider"),
+        };
+
+        try {
+          const checkout = await startCheckout(payload);
+          window.location.assign(checkout.approvalUrl || checkout.checkoutUrl);
+        } catch (error) {
+          setCheckoutError(error.message);
+          checkoutSubmit.disabled = false;
+          checkoutSubmit.textContent = "Continue to payment";
+        }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("checkout") === "success") {
+        checkoutStatus.textContent = "Payment approved. Your membership confirmation is on its way.";
+        checkoutStatus.classList.add("is-visible");
+      }
+
+      if (params.get("checkout") === "cancelled") {
+        checkoutStatus.textContent = "Checkout was cancelled. You can choose a plan whenever you are ready.";
+        checkoutStatus.classList.add("is-visible");
+      }
+    </script>
+  </body>
+</html>

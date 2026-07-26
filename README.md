@@ -20,6 +20,26 @@ Built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui-style components, and
 - `/top-episodes` - curated all-time top HXP episodes with outbound watch links.
 - `/universe` - interactive 192-episode knowledge graph.
 - `/membership` - transparent membership value, roadmap, pricing, FAQ, and checkout states.
+- `/community` - authenticated listener feed, topic rooms, people discovery, and episode discussions.
+- `/community/messages` - private one-to-one conversations.
+- `/community/settings` - profile, interests, location privacy, and account deletion.
+- `/community/admin` - report review for community administrators.
+
+## Community architecture
+
+- Prisma models normalize users, posts, threaded comments, reactions, bookmarks, follows, blocks, private messages, notifications, and reports.
+- Passwords use bcrypt hashing; sessions use signed JWTs in HTTP-only, same-site cookies.
+- Server-side authorization protects writing, messaging, account settings, and moderation.
+- The local development datasource is SQLite. Before multi-instance production deployment, move the Prisma datasource to managed PostgreSQL and set `DATABASE_URL`.
+- Password-reset records are modeled, but production reset delivery requires an email provider and should not be activated until one is selected.
+- Stripe remains the membership billing source. Synchronize successful Stripe webhook events into the `User.membership` field before enforcing paid-only rooms in production.
+
+### Community setup
+
+1. Copy `.env.example` values into a private `.env`.
+2. Set a long random `AUTH_SECRET`.
+3. Run `npm run db:generate`, `npm run db:migrate`, and `npm run db:seed`.
+4. The clearly labeled local demo login is `demo@thehumanxp.com` / `hxp-demo-2026`.
 
 ## Run the Next.js app
 

@@ -33,10 +33,30 @@ const trustedGuests = [
   "Dr. Bruce Lipton",
 ];
 const threads = [
-  ["Consciousness", "What is the mind—and where does it end?", "#f0d69f"],
-  ["Human Potential", "How much of our capacity remains untrained?", "#dca4ff"],
-  ["Science", "Where evidence meets the edge of the known.", "#83d8ee"],
-  ["Ancient Worlds", "Memory, origins, and civilizations beneath history.", "#eda978"],
+  {
+    name: "Consciousness",
+    copy: "What is the mind—and where does it end?",
+    color: "#f0d69f",
+    episodes: [192, 191, 172],
+  },
+  {
+    name: "Human Potential",
+    copy: "How much of our capacity remains untrained?",
+    color: "#dca4ff",
+    episodes: [181, 180, 177],
+  },
+  {
+    name: "Science",
+    copy: "Where evidence meets the edge of the known.",
+    color: "#83d8ee",
+    episodes: [174, 176, 184],
+  },
+  {
+    name: "Ancient Worlds",
+    copy: "Memory, origins, and civilizations beneath history.",
+    color: "#eda978",
+    episodes: [185, 179, 188],
+  },
 ];
 const principles = [
   ["Explore without the algorithm", "Follow ideas, guests, and questions—not a feed designed to keep you scrolling.", Compass],
@@ -78,6 +98,8 @@ function Header() {
         <Link href="#episodes" onClick={() => setOpen(false)}>Episodes</Link>
         <Link href="/universe" onClick={() => setOpen(false)}>Knowledge Universe</Link>
         <Link href="/top-episodes" onClick={() => setOpen(false)}>Start here</Link>
+        <Link href="/quotes" onClick={() => setOpen(false)}>Quotes</Link>
+        <Link href="/community" onClick={() => setOpen(false)}>Community</Link>
         <Link href="/membership" onClick={() => setOpen(false)}>Membership</Link>
       </nav>
       <div className="conversion-header-actions">
@@ -169,7 +191,29 @@ function KnowledgePortal() {
         <p>Every glowing point is an episode. Every line traces a shared guest, theme, or question. Move through the work by curiosity rather than chronology.</p>
         <TrackedLink href="/universe" event="universe_engaged" label="knowledge_portal" className="radiant-button">Enter the Knowledge Universe <ArrowRight className="size-4" /></TrackedLink>
       </motion.div>
-      <div className="thread-list">{threads.map(([name, copy, color]) => <article key={name}><i style={{ background: color, boxShadow: `0 0 22px ${color}` }} /><span><b>{name}</b><small>{copy}</small></span><ArrowRight className="size-4" /></article>)}</div>
+      <div className="thread-list">
+        {threads.map((thread) => (
+          <article key={thread.name}>
+            <header>
+              <i style={{ background: thread.color, boxShadow: `0 0 22px ${thread.color}` }} />
+              <span><b>{thread.name}</b><small>{thread.copy}</small></span>
+            </header>
+            <div className="thread-episodes">
+              {thread.episodes.map((number) => {
+                const episode = episodes.find((item) => item.number === number);
+                if (!episode) return null;
+                return (
+                  <a key={number} href={episode.audio ?? episode.url ?? "#"} target="_blank" rel="noreferrer">
+                    <span>EP {number}</span>
+                    <b>{cleanTitle(episode.title)}</b>
+                    <Play className="size-3" fill="currentColor" />
+                  </a>
+                );
+              })}
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -229,7 +273,7 @@ function Footer() {
   return (
     <footer className="conversion-footer">
       <div className="footer-mark"><span>HXP</span><p>The Human Experience Podcast<small>Independent conversations since 2013</small></p></div>
-      <div><b>Explore</b><Link href="/universe">Knowledge Universe</Link><Link href="/top-episodes">Essential episodes</Link><Link href="/membership">Membership</Link></div>
+      <div><b>Explore</b><Link href="/universe">Knowledge Universe</Link><Link href="/top-episodes">Essential episodes</Link><Link href="/quotes">Quotes</Link><Link href="/membership">Membership</Link></div>
       <div><b>Listen</b><a href={featured.audio ?? "#"}>Latest episode</a><a href="https://open.spotify.com/show/40OXBmEF70PZQ9xeVz3515">Spotify</a><a href="https://www.youtube.com/channel/UCkr2vordfEQw9_sB8pvrGyA">YouTube</a></div>
       <div><b>Information</b><a href="https://fev.laz.mybluehost.me/contact-2/">Contact</a><span>Secure checkout by Stripe</span><span>© 2026 HXP</span></div>
     </footer>

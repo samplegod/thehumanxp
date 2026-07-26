@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Human Experience — Start Here</title>
+  <meta name="description" content="Long-form conversations exploring consciousness, meaning, neuroscience, and the edges of human understanding." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg0:#0f1115;
+      --bg1:#11151b;
+      --card: rgba(255,255,255,.04);
+      --line: rgba(255,255,255,.10);
+      --text:#f3f1ea;
+      --muted: rgba(243,241,234,.72);
+      --muted2: rgba(243,241,234,.56);
+      --accent:#1e5f4e;
+      --accentHi:#2a7a65;
+      --shadow: 0 16px 50px rgba(0,0,0,.55);
+      --radius: 18px;
+      --max: 520px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(900px 700px at 50% -10%, rgba(30,95,78,.22), transparent 60%),
+        radial-gradient(900px 700px at 20% 20%, rgba(30,95,78,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height:1.5;
+    }
+
+    a{color:inherit}
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 16px 110px;
+    }
+
+    .brand{
+      text-align:center;
+      padding: 18px 0 10px;
+    }
+    .brand h1{
+      margin: 0;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      font-size: 18px;
+      opacity: .95;
+    }
+    .tagline{
+      margin: 10px auto 0;
+      max-width: 38ch;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .sectionTitle{
+      margin: 18px 0 10px;
+      text-align:center;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      font-size: 20px;
+      letter-spacing: .2px;
+      color: var(--text);
+    }
+    .divider{
+      height:1px;
+      background: var(--line);
+      opacity:.55;
+      margin: 10px 0 14px;
+    }
+
+    .featured{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      text-decoration:none;
+      display:block;
+    }
+    .cover{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      background:
+        radial-gradient(520px 260px at 25% 20%, rgba(30,95,78,.28), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55)),
+        url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1400&q=60") center/cover;
+      position:relative;
+    }
+    .cover::after{
+      content:"HXP";
+      position:absolute;
+      top:12px; left:12px;
+      width:40px; height:40px;
+      border-radius:999px;
+      display:grid; place-items:center;
+      background: rgba(15,17,21,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing:.6px;
+      font-size: 12px;
+      backdrop-filter: blur(6px);
+    }
+
+    .content{ padding: 14px 14px 16px; }
+
+    .epTitle{
+      margin: 0;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: .2px;
+    }
+
+    .meta{
+      margin: 10px 0 0;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+
+    .oneLiner{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .ctaWrap{ margin-top: 14px; }
+    .playBtn{
+      width: 100%;
+      min-height: 62px;
+      border-radius: 14px;
+      border: 1px solid rgba(30,95,78,.65);
+      background: linear-gradient(180deg, rgba(42,122,101,.95), rgba(30,95,78,.78));
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: .2px;
+      font-size: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .playBtn:active{transform: translateY(1px);}
+    .tri{
+      width:0;height:0;
+      border-left: 12px solid var(--text);
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      opacity:.95;
+    }
+
+    .microcopy{
+      margin: 10px 0 0;
+      text-align:center;
+      color: var(--muted2);
+      font-size: 12.5px;
+    }
+
+    details{
+      margin-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 12px;
+    }
+    summary{
+      cursor:pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+      list-style: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    summary::-webkit-details-marker{display:none}
+    .fullDesc{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .subTitle{
+      margin: 22px 0 10px;
+      text-align:center;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+
+    .list{ display:flex; flex-direction:column; gap: 12px; }
+
+    .row{
+      display:grid;
+      grid-template-columns: 78px 1fr 72px;
+      gap: 10px;
+      align-items:center;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    .thumb{
+      width:78px;
+      height:78px;
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55)),
+        url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=60") center/cover;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    .rowTitle{
+      margin: 0;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      font-size: 15.5px;
+      line-height: 1.15;
+    }
+    .rowMeta{
+      margin: 6px 0 0;
+      color: var(--muted2);
+      font-size: 12.5px;
+    }
+
+    .rowPlay{
+      justify-self:end;
+      min-width: 66px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(15,17,21,.35);
+      color: var(--text);
+      font-weight: 700;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .rowPlay:active{transform: translateY(1px);}
+
+    .platforms{
+      margin-top: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .platBtn{
+      height: 52px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-weight: 650;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .platBtn:hover{background: rgba(255,255,255,.05);}
+    .platBtn:active{transform: translateY(1px);}
+    .platNote{
+      text-align:center;
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    .emailCta{
+      margin-top: 16px;
+    }
+    .emailCtaBtn{
+      width: 100%;
+      min-height: 54px;
+      border-radius: 14px;
+      border: 1px solid rgba(30,95,78,.60);
+      background: linear-gradient(180deg, rgba(42,122,101,.92), rgba(30,95,78,.76));
+      color: var(--text);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: .1px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .emailCtaBtn:active{transform: translateY(1px);}
+
+    .emailForm{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 8px;
+    }
+    .emailInput{
+      width:100%;
+      min-height:44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 0 12px;
+      font: inherit;
+    }
+    .emailInput::placeholder{color: var(--muted2);}
+    .emailSubmit{
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(30,95,78,.60);
+      background: linear-gradient(180deg, rgba(42,122,101,.95), rgba(30,95,78,.78));
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .emailStatus{
+      margin: 6px 0 0;
+      font-size: 12.5px;
+      color: var(--muted2);
+      min-height: 18px;
+    }
+
+    .sticky{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      width: min(var(--max), calc(100% - 20px));
+      background: rgba(15,17,21,.78);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 10px 10px 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease;
+    }
+    .sticky.show{ opacity: 1; pointer-events: auto; }
+    .stickyLeft{ display:flex; gap: 10px; align-items:center; min-width: 0; }
+    .hpIcon{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      background: rgba(30,95,78,.28);
+      border: 1px solid rgba(30,95,78,.40);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .hpIcon::before{
+      content:"";
+      width:0;height:0;
+      border-left: 10px solid var(--text);
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      opacity:.9;
+      margin-left: 2px;
+    }
+    .nowPlaying{ min-width:0; }
+    .npLabel{ font-size: 11px; color: var(--muted2); margin: 0; line-height: 1.1; }
+    .npTitle{
+      font-size: 13px;
+      margin: 2px 0 0;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      max-width: 260px;
+    }
+    .stickyBtn{
+      height: 44px;
+      min-width: 74px;
+      border-radius: 14px;
+      border: 1px solid rgba(30,95,78,.55);
+      background: linear-gradient(180deg, rgba(42,122,101,.95), rgba(30,95,78,.78));
+      color: var(--text);
+      font-weight: 800;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    dialog{
+      width: min(720px, calc(100% - 24px));
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(15,17,21,.92);
+      color: var(--text);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+    dialog::backdrop{background: rgba(0,0,0,.6);}
+    .dlgHead{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+      margin-bottom: 10px;
+    }
+    .dlgTitle{
+      margin: 0;
+      font-family: Fraunces, serif;
+      font-weight: 650;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .closeBtn{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 10px;
+      cursor:pointer;
+    }
+    audio{width:100%}
+    .hint{ margin: 10px 0 0; color: var(--muted2); font-size: 12.5px; }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="brand">
+      <h1>THE HUMAN EXPERIENCE</h1>
+      <p class="tagline">Long-form conversations exploring consciousness, meaning, neuroscience, and the edges of human understanding.</p>
+    </header>
+
+    <h2 class="sectionTitle">Start Here</h2>
+    <div class="divider"></div>
+
+    <a class="featured" href="#" id="featuredCard" aria-label="Play the featured episode">
+      <div class="cover" role="img" aria-label="Featured episode cover art"></div>
+
+      <div class="content">
+        <h3 class="epTitle" id="latestTitle">Episode 192 — Mark Gober — Unveiling the Spiritual and Mystical Universe</h3>
+        <p class="meta" id="latestMeta">Episode 192 • 62 min • Aug 31, 2025</p>
+        <p class="oneLiner" id="latestOneLiner">A deep conversation on consciousness, synchronicity, and spiritual awakening.</p>
+
+        <div class="ctaWrap">
+          <button class="playBtn" type="button" id="playLatestBtn" aria-label="Play episode">
+            <span class="tri" aria-hidden="true"></span>
+            <span>Play Episode</span>
+          </button>
+          <p class="microcopy">Plays instantly. No signup required.</p>
+        </div>
+
+        <details>
+          <summary>Read more</summary>
+          <p class="fullDesc" id="latestDesc">
+            Xavier Katana and Mark Gober explore consciousness, near-death experiences, synchronicity, and the relationship between science and spirituality.
+          </p>
+        </details>
+      </div>
+    </a>
+
+    <div class="platforms" aria-label="Listen on platforms">
+      <a class="platBtn" href="https://podcasts.apple.com/us/podcast/the-human-experience-podcast/id920323000" target="_blank" rel="noreferrer">Listen on Apple Podcasts</a>
+      <a class="platBtn" href="https://allmylinks.com/link/out?id=b2sbtl-333q-s4066n&accessToken=tY1_03K3Y6p6fjTCFSgdWFmWBRSYi28B" target="_blank" rel="noreferrer">Listen on Spotify</a>
+      <a class="platBtn" href="https://allmylinks.com/link/out?id=1szrapi-333m-blvqie&accessToken=6S2sl8AGp8rzNMGRahFIfa_RYrs79Den" target="_blank" rel="noreferrer">Watch on YouTube</a>
+      <a class="platBtn" href="/rss.xml">RSS Feed</a>
+      <p class="platNote">Prefer your podcast app? Use Apple/Spotify links above.</p>
+    </div>
+
+    <h2 class="subTitle">Recent Episodes</h2>
+
+    <section class="list" id="recentList" aria-label="Recent episodes list"></section>
+
+    <div class="emailCta">
+      <button class="emailCtaBtn" id="openEmailModalBtn" type="button">Enter your email, I like making wise decisions</button>
+    </div>
+  </main>
+
+  <div class="sticky" id="stickyBar" aria-label="Sticky mini player">
+    <div class="stickyLeft">
+      <div class="hpIcon" aria-hidden="true"></div>
+      <div class="nowPlaying">
+        <p class="npLabel">Now Playing</p>
+        <p class="npTitle" id="npTitle">Episode 192 — Mark Gober</p>
+      </div>
+    </div>
+    <button class="stickyBtn" id="stickyPlayBtn" type="button">Play</button>
+  </div>
+
+  <dialog id="playerDialog" aria-label="Episode player">
+    <div class="dlgHead">
+      <h3 class="dlgTitle" id="dlgTitle">Now Playing</h3>
+      <button class="closeBtn" id="closeDialogBtn" aria-label="Close player">Close</button>
+    </div>
+    <audio id="audioPlayer" controls preload="none"></audio>
+    <p class="hint">Replace placeholder MP3 URLs with real episode MP3 links.</p>
+  </dialog>
+
+  <dialog id="emailDialog" aria-label="Email capture">
+    <div class="dlgHead">
+      <h3 class="dlgTitle">Join the Mission</h3>
+      <button class="closeBtn" id="closeEmailDialogBtn" aria-label="Close email form">Close</button>
+    </div>
+    <form id="emailCaptureForm" class="emailForm" method="dialog">
+      <input id="emailCaptureInput" class="emailInput" name="email" type="email" placeholder="Enter your email" required />
+      <button class="emailSubmit" type="submit">Join</button>
+    </form>
+    <p class="emailStatus" id="emailStatus" aria-live="polite"></p>
+    <p class="hint">We will use your email only for Human Experience updates.</p>
+  </dialog>
+
+  <script>
+    const featuredEpisode = {
+      title: "Episode 192 — Mark Gober — Unveiling the Spiritual and Mystical Universe",
+      meta: "Episode 192 • 62 min • Aug 31, 2025",
+      oneLiner: "A deep conversation on consciousness, synchronicity, and spiritual awakening.",
+      description: "Xavier Katana and Mark Gober explore consciousness, near-death experiences, synchronicity, and the relationship between science and spirituality.",
+      audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    };
+
+    const recentEpisodes = [
+      {
+        title: "Episode 191 — Marjorie Woollacott — Infinite Awareness",
+        meta: "61 min • Aug 28, 2025",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        coverUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=600&q=60"
+      },
+      {
+        title: "Episode 190 — Dr. John Gray on Relationship Dynamics",
+        meta: "57 min • Apr 17, 2025",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        coverUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=60"
+      },
+      {
+        title: "Episode 189 — Dr. Bernard Beitman — Meaningful Coincidence",
+        meta: "74 min • Jan 6, 2023",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+        coverUrl: "https://images.unsplash.com/photo-1520975958225-7d380d1f29c4?auto=format&fit=crop&w=600&q=60"
+      }
+    ];
+
+    document.getElementById("latestTitle").textContent = featuredEpisode.title;
+    document.getElementById("latestMeta").textContent = featuredEpisode.meta;
+    document.getElementById("latestOneLiner").textContent = featuredEpisode.oneLiner;
+    document.getElementById("latestDesc").textContent = featuredEpisode.description;
+    document.getElementById("npTitle").textContent = featuredEpisode.title;
+
+    const dlg = document.getElementById("playerDialog");
+    const audio = document.getElementById("audioPlayer");
+    const dlgTitle = document.getElementById("dlgTitle");
+    const emailDialog = document.getElementById("emailDialog");
+    const emailStatus = document.getElementById("emailStatus");
+
+    function openPlayer(title, audioUrl){
+      dlgTitle.textContent = title;
+      audio.src = audioUrl;
+      if (!dlg.open) dlg.showModal();
+      audio.play().catch(() => {});
+    }
+
+    function closePlayer(){
+      audio.pause();
+      dlg.close();
+    }
+
+    document.getElementById("closeDialogBtn").addEventListener("click", closePlayer);
+    document.getElementById("openEmailModalBtn").addEventListener("click", () => {
+      emailStatus.textContent = "";
+      if (!emailDialog.open) emailDialog.showModal();
+    });
+    document.getElementById("closeEmailDialogBtn").addEventListener("click", () => {
+      emailDialog.close();
+    });
+    document.getElementById("emailCaptureForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = document.getElementById("emailCaptureInput");
+      const submitBtn = e.currentTarget.querySelector(".emailSubmit");
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+
+      emailStatus.textContent = "Saving...";
+      submitBtn.disabled = true;
+
+      fetch("/api/manifesto/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: input.value.trim() })
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            const payload = await response.json().catch(() => ({}));
+            throw new Error(payload.error || "Unable to save email right now.");
+          }
+          emailStatus.textContent = "Thanks. You're on the list.";
+          input.value = "";
+          setTimeout(() => emailDialog.close(), 500);
+        })
+        .catch((error) => {
+          emailStatus.textContent = error.message;
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+        });
+    });
+
+    dlg.addEventListener("close", ()=> {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    });
+
+    document.getElementById("featuredCard").addEventListener("click", (e) => {
+      e.preventDefault();
+      openPlayer(featuredEpisode.title, featuredEpisode.audioUrl);
+      showSticky();
+    });
+
+    document.getElementById("playLatestBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openPlayer(featuredEpisode.title, featuredEpisode.audioUrl);
+      showSticky();
+    });
+
+    document.getElementById("stickyPlayBtn").addEventListener("click", () => {
+      if (!audio.src) {
+        openPlayer(featuredEpisode.title, featuredEpisode.audioUrl);
+      } else {
+        audio.play().catch(()=>{});
+        if (!dlg.open) dlg.showModal();
+      }
+    });
+
+    const list = document.getElementById("recentList");
+
+    function createRow(ep){
+      const row = document.createElement("article");
+      row.className = "row";
+
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
+      if (ep.coverUrl){
+        thumb.style.backgroundImage =
+          `linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55)), url("${ep.coverUrl}")`;
+        thumb.style.backgroundSize = "cover";
+        thumb.style.backgroundPosition = "center";
+      }
+
+      const mid = document.createElement("div");
+      const title = document.createElement("h4");
+      title.className = "rowTitle";
+      title.textContent = ep.title;
+
+      const meta = document.createElement("p");
+      meta.className = "rowMeta";
+      meta.textContent = ep.meta;
+
+      mid.appendChild(title);
+      mid.appendChild(meta);
+
+      const play = document.createElement("button");
+      play.className = "rowPlay";
+      play.type = "button";
+      play.textContent = "Play";
+      play.setAttribute("aria-label", `Play ${ep.title}`);
+      play.addEventListener("click", () => {
+        openPlayer(ep.title, ep.audioUrl);
+        document.getElementById("npTitle").textContent = ep.title;
+        showSticky();
+      });
+
+      row.addEventListener("click", (e) => {
+        if (e.target === play) return;
+        openPlayer(ep.title, ep.audioUrl);
+        document.getElementById("npTitle").textContent = ep.title;
+        showSticky();
+      });
+
+      row.appendChild(thumb);
+      row.appendChild(mid);
+      row.appendChild(play);
+      return row;
+    }
+
+    recentEpisodes.forEach(ep => list.appendChild(createRow(ep)));
+
+    const sticky = document.getElementById("stickyBar");
+    let stickyShown = false;
+
+    function showSticky(){
+      if (stickyShown) return;
+      sticky.classList.add("show");
+      stickyShown = true;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (stickyShown) return;
+      if (window.scrollY > 260) showSticky();
+    }, {passive:true});
+
+    audio.addEventListener("play", showSticky);
+  </script>
+</body>
+</html>
