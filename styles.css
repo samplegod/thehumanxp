@@ -1,0 +1,944 @@
+:root {
+  --bg: #f4f4f4;
+  --surface: #ffffff;
+  --text: #202124;
+  --grid: #d9d9d9;
+  --snake: #1f7a1f;
+  --food: #c62828;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  width: min(92vw, 640px);
+  padding: 1rem;
+  border: 1px solid #dadce0;
+  background: var(--surface);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+}
+
+.hud h1,
+.hud p {
+  margin: 0;
+}
+
+.board-wrap {
+  border: 1px solid #dadce0;
+  padding: 0.5rem;
+}
+
+.board {
+  --grid-size: 20;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), minmax(0, 1fr));
+  aspect-ratio: 1 / 1;
+}
+
+.cell {
+  border: 1px solid var(--grid);
+}
+
+.cell.snake {
+  background: var(--snake);
+}
+
+.cell.food {
+  background: var(--food);
+}
+
+.controls {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  border: 1px solid #bdbdbd;
+  padding: 0.4rem 0.8rem;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+
+.status {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.plan-card {
+  border: 1px solid #dadce0;
+  padding: 0.75rem;
+}
+
+.plan-card h2 {
+  margin-top: 0;
+}
+
+.price {
+  font-weight: 600;
+}
+
+ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.1rem;
+}
+
+.membership-page {
+  display: block;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(45, 90, 76, 0.2) 0%, transparent 34%),
+    radial-gradient(circle at 80% 0%, rgba(20, 45, 80, 0.28) 0%, transparent 30%),
+    linear-gradient(180deg, #090c12 0%, #121824 50%, #1a1f2c 100%);
+  color: #f3efe4;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.membership-shell {
+  width: min(1100px, 92vw);
+  margin: 2rem auto 3rem;
+}
+
+.membership-super-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #f3e7bf;
+  text-shadow: 0 0 16px rgba(26, 32, 44, 0.6);
+}
+
+.membership-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.membership-link {
+  color: #8bb2d9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.membership-hero {
+  background: linear-gradient(135deg, #171d2b 0%, #1c2436 52%, #202a3f 100%);
+  color: #f3efe4;
+  border: 1px solid #4b5f67;
+  padding: 2.3rem;
+  border-radius: 18px;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.45);
+}
+
+.membership-kicker {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7fb39f;
+  font-weight: 700;
+}
+
+.membership-hero h1 {
+  margin: 0.6rem 0 0.8rem;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.1;
+}
+
+.membership-subtitle {
+  margin: 0;
+  color: #d9d2c0;
+  max-width: 60ch;
+}
+
+.membership-hero-actions {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.membership-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  border: 1px solid transparent;
+}
+
+.membership-button.primary {
+  background: #f3e7bf;
+  color: #1d2333;
+  border-color: #d6c89c;
+  box-shadow: none;
+}
+
+.membership-button.secondary {
+  border-color: #4f6472;
+  color: #d4dceb;
+  background: rgba(34, 43, 64, 0.55);
+}
+
+.membership-stats {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.8rem;
+}
+
+.membership-stats article {
+  background: rgba(19, 25, 37, 0.9);
+  border: 1px solid #334252;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.membership-stats .value {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.membership-stats .label {
+  margin: 0.2rem 0 0;
+  color: #9ea8bb;
+  font-size: 0.9rem;
+}
+
+.membership-section {
+  margin-top: 1.4rem;
+  background: rgba(18, 24, 36, 0.92);
+  border: 1px solid #2f3b4d;
+  border-radius: 16px;
+  padding: 1.2rem;
+}
+
+.membership-section h2 {
+  margin-top: 0;
+}
+
+.membership-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.9rem;
+}
+
+.plan-card {
+  border: 1px solid #304150;
+  border-radius: 14px;
+  padding: 1rem;
+  background: #141c2a;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+.plan-card.featured {
+  border-color: #5d7e73;
+  background: linear-gradient(180deg, #172131 0%, #1c2738 100%);
+  box-shadow: inset 0 0 0 1px rgba(129, 165, 147, 0.28);
+}
+
+.plan-badge {
+  margin: 0 0 0.5rem;
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #9fc7b7;
+}
+
+.plan-tier {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.price {
+  margin: 0.55rem 0 0.8rem;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.price span {
+  font-size: 0.95rem;
+  color: #9ba7bd;
+  margin-left: 0.25rem;
+}
+
+.plan-card button {
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #d6c89c;
+  background: #f3e7bf;
+  color: #1e2536;
+  font-weight: 700;
+  padding: 0.55rem 0.8rem;
+  box-shadow: none;
+}
+
+.benefit-list {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+
+.benefit-list article {
+  border: 1px solid #2f3b4d;
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: #151d2c;
+}
+
+.benefit-list h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.membership-checkout p {
+  margin-bottom: 0;
+  color: #c2ccdf;
+}
+
+.membership-quote blockquote {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: #e8e0ca;
+  border-left: 3px solid #5e7f73;
+  padding-left: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .membership-shell {
+    margin-top: 1rem;
+  }
+
+  .membership-hero {
+    padding: 1.2rem;
+  }
+}
+
+.hx-page {
+  background-color: #11131a;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(125, 180, 160, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0.35) 0%, transparent 60%);
+  color: #d6d0c4;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.hx-shell {
+  width: min(980px, 92vw);
+  margin: 3rem auto;
+}
+
+.hx-hero,
+.hx-block,
+.hx-strip {
+  border-top: 1px solid rgba(214, 208, 196, 0.18);
+  padding: 2.2rem 0;
+  text-align: center;
+}
+
+.hx-hero {
+  border-top: none;
+  padding-top: 0;
+}
+
+.hx-hero h1,
+.hx-block h2 {
+  margin: 0;
+  color: #d8d2c4;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.hx-hero h1 {
+  font-size: clamp(2.3rem, 6vw, 4.5rem);
+  line-height: 1.08;
+}
+
+.hx-subtitle {
+  margin: 1.3rem auto 0;
+  max-width: 900px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #d4cec1;
+  font-size: clamp(1.05rem, 2vw, 1.55rem);
+  line-height: 1.5;
+}
+
+.hx-subtitle strong {
+  font-weight: 800;
+  color: #ece6d9;
+}
+
+.hx-meta {
+  margin-top: 1.6rem;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  letter-spacing: 0.01em;
+  color: #c8c2b5;
+}
+
+.hx-hero-cta {
+  margin-top: 1.4rem;
+}
+
+.hx-btn {
+  display: inline-block;
+  min-width: 300px;
+  padding: 0.68rem 1.35rem;
+  border-radius: 10px;
+  border: 1px solid rgba(190, 199, 177, 0.35);
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(54, 74, 70, 0.7), rgba(24, 35, 39, 0.9));
+  color: #e6dfcf;
+  font-size: clamp(1.15rem, 2.2vw, 1.95rem);
+  line-height: 1.2;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 8px 26px rgba(0, 0, 0, 0.35);
+}
+
+.hx-footnote {
+  margin-top: 1rem;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: #c5beb1;
+}
+
+.hx-inline-link {
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+  color: #d6d0c4;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+.hx-strip p {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 2rem);
+  color: #d7d0c3;
+}
+
+.hx-block h2 {
+  font-size: clamp(2rem, 4vw, 3.3rem);
+}
+
+.hx-quote {
+  margin: 1rem 0 0;
+  font-size: clamp(1.6rem, 3vw, 2.7rem);
+  color: #ded7c9;
+}
+
+.hx-body-copy {
+  margin: 1rem auto 0;
+  max-width: 760px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #cbc4b8;
+  font-size: clamp(1rem, 1.8vw, 1.8rem);
+  line-height: 1.4;
+}
+
+.hx-plan-grid {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.hx-plan,
+.hx-annual {
+  border: 1px solid rgba(214, 208, 196, 0.26);
+  border-radius: 8px;
+  padding: 1.2rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.12));
+}
+
+.hx-plan h3,
+.hx-annual h3 {
+  margin: 0;
+  text-align: left;
+  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+  font-weight: 500;
+  color: #ded7ca;
+}
+
+.hx-plan h3 span {
+  font-size: 0.7em;
+}
+
+.hx-plan ul {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.2rem;
+  text-align: left;
+}
+
+.hx-plan li {
+  margin-bottom: 0.4rem;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(0.96rem, 1.4vw, 1.55rem);
+  color: #d0c9bd;
+}
+
+.hx-plan .hx-btn,
+.hx-annual .hx-btn {
+  min-width: 0;
+  width: 85%;
+  font-size: clamp(1rem, 1.5vw, 1.6rem);
+}
+
+.hx-annual {
+  margin: 1rem auto 0;
+  width: min(420px, 100%);
+  text-align: center;
+}
+
+.hx-annual h3 {
+  text-align: center;
+  margin-bottom: 0.85rem;
+}
+
+.hx-faq-list {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.hx-faq-item {
+  border: 1px solid rgba(214, 208, 196, 0.22);
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+  column-gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.hx-faq-item p {
+  margin: 0;
+  text-align: left;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #d3ccbe;
+  font-size: clamp(1rem, 1.4vw, 1.45rem);
+}
+
+.hx-faq-plus {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(214, 208, 196, 0.22);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: #d6d0c4;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .hx-plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hx-btn {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hx-plan .hx-btn,
+  .hx-annual .hx-btn {
+    width: 100%;
+  }
+}
+
+.release-page {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0c111d 0%, #111a2b 50%, #162138 100%);
+  color: #e7e1d1;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.release-shell {
+  width: min(980px, 92vw);
+  margin: 2.2rem auto 3rem;
+}
+
+.release-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.release-kicker {
+  margin: 0;
+  color: #a1b7d8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.release-header h1 {
+  margin: 0.4rem 0;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+}
+
+.release-header p {
+  margin: 0;
+  color: #c6cfdf;
+}
+
+.release-links {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.release-links a {
+  color: #cde2ff;
+  text-decoration: none;
+}
+
+.release-card {
+  background: rgba(18, 24, 36, 0.9);
+  border: 1px solid #344966;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.release-card h2 {
+  margin-top: 0;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+.release-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.release-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.release-form input,
+.release-form textarea {
+  border-radius: 8px;
+  border: 1px solid #425978;
+  background: #0f1624;
+  color: #e7edf9;
+  padding: 0.55rem 0.65rem;
+}
+
+.release-checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.release-form button,
+.release-list-header button {
+  border-radius: 8px;
+  border: 1px solid #d4c8a4;
+  background: #e8dcc0;
+  color: #1f2738;
+  font-weight: 700;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+}
+
+.release-status {
+  margin: 0;
+  color: #9ac7b0;
+}
+
+.release-status[data-error='true'] {
+  color: #ffb4b4;
+}
+
+.release-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.episode-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.episode-item,
+.episode-empty {
+  border: 1px solid #2e3d56;
+  background: #101827;
+  border-radius: 9px;
+  padding: 0.7rem;
+}
+
+.episode-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.episode-meta {
+  margin: 0.3rem 0;
+  font-size: 0.88rem;
+  color: #a8b6ce;
+}
+
+.episode-description {
+  margin: 0;
+  color: #d8dfec;
+}
+
+@media (max-width: 700px) {
+  .release-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .release-links {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+.mobile-hxp-page {
+  margin: 0;
+  min-height: 100vh;
+  background: #0d0f16;
+  color: #ddd6c8;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.mobile-hxp-shell {
+  width: min(430px, 100vw);
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 1.2rem 1rem 1.6rem;
+  background:
+    radial-gradient(circle at 30% 15%, rgba(255, 255, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 65%, rgba(44, 62, 90, 0.22), transparent 40%),
+    linear-gradient(180deg, #141824 0%, #1a1f2b 100%);
+}
+
+.mobile-status {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #ece6da;
+  font-size: 0.9rem;
+  margin-bottom: 1.15rem;
+}
+
+.mobile-icons {
+  letter-spacing: 0.12em;
+}
+
+.mobile-brand {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  font-size: clamp(2rem, 7.6vw, 2.35rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #d9d1c2;
+}
+
+.mobile-section h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #d9d1c2;
+}
+
+.mobile-featured-card {
+  margin-top: 0.6rem;
+  border: 1px solid rgba(215, 206, 189, 0.22);
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.25));
+}
+
+.mobile-featured-image {
+  height: 220px;
+  background:
+    radial-gradient(circle at 72% 38%, rgba(255, 226, 172, 0.35), transparent 30%),
+    radial-gradient(circle at 24% 40%, rgba(7, 9, 15, 0.76), transparent 44%),
+    linear-gradient(135deg, #24303f 0%, #16202f 48%, #0f1724 100%);
+  position: relative;
+}
+
+.mobile-hxp-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(215, 206, 189, 0.5);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 1.35rem;
+  color: #d8d1c3;
+}
+
+.mobile-image-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-size: 1rem;
+  color: #c6bfaf;
+}
+
+.mobile-featured-body {
+  padding: 0.95rem;
+}
+
+.mobile-featured-body h3 {
+  margin: 0;
+  font-size: 1.22rem;
+  line-height: 1.3;
+  color: #ded7c9;
+  font-weight: 500;
+}
+
+.mobile-featured-body p {
+  margin: 0.7rem 0 0;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  line-height: 1.45;
+  color: #c8c1b2;
+}
+
+.mobile-primary-play {
+  width: 100%;
+  margin-top: 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(209, 199, 180, 0.4);
+  background: linear-gradient(180deg, rgba(55, 73, 70, 0.75), rgba(24, 34, 37, 0.92));
+  color: #e1d9ca;
+  padding: 0.5rem 0.85rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.mobile-listen-on {
+  margin-top: 0.8rem !important;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.mobile-divider-title {
+  margin-top: 1.05rem !important;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(215, 206, 189, 0.2);
+}
+
+.mobile-episode-item {
+  margin-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(215, 206, 189, 0.16);
+  display: grid;
+  grid-template-columns: 104px 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.mobile-thumb {
+  width: 104px;
+  height: 78px;
+  border-radius: 6px;
+  border: 1px solid rgba(215, 206, 189, 0.2);
+}
+
+.mobile-thumb.one {
+  background: linear-gradient(135deg, #212f3d, #101924);
+}
+
+.mobile-thumb.two {
+  background: linear-gradient(135deg, #2d3747, #101924);
+}
+
+.mobile-thumb.three {
+  background: linear-gradient(135deg, #3b3a3a, #141924);
+}
+
+.mobile-episode-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.26;
+  color: #ddd6c8;
+}
+
+.mobile-duration {
+  margin: 0.3rem 0 0;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #b9b1a2;
+  font-size: 0.92rem;
+}
+
+.mobile-play-btn {
+  border: 1px solid rgba(215, 206, 189, 0.3);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(55, 73, 70, 0.75), rgba(24, 34, 37, 0.92));
+  color: #e4dccd;
+  font-size: 0.98rem;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}

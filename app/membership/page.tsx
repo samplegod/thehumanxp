@@ -18,9 +18,9 @@ const included = [
 ];
 
 const roadmap = [
-  ["Member dispatches", "Extended notes and research trails connected to new and archival episodes."],
+  ["The listening room", "A member community for thoughtful reflections, episode discussions, and connection."],
   ["Deeper listening paths", "Guided sequences through consciousness, science, healing, and human potential."],
-  ["Closer to the conversation", "Future ways for members to help shape questions and emerging themes."],
+  ["Closer to the conversation", "Follow listeners with shared interests and continue the inquiry together."],
 ];
 
 export default async function MembershipPage({
@@ -75,7 +75,7 @@ export default async function MembershipPage({
         <div><p className="conversion-kicker">Questions, answered plainly</p><h2>Before you join.</h2></div>
         <div>
           <details open><summary>What do I receive immediately?</summary><p>You can explore the complete public archive, Knowledge Universe, and curated top episodes now. Your payment primarily supports continued independent production while member-specific experiences are developed.</p></details>
-          <details><summary>Is premium audio or a private community available?</summary><p>Not yet in this Next.js project. Those features are not being sold as current benefits. Any future member-only release will be communicated clearly.</p></details>
+          <details><summary>Is the HXP community available?</summary><p>Yes. Every listener can create a profile and join public episode discussions. Paid supporters receive a member badge and access to member-designated spaces as they are introduced.</p></details>
           <details><summary>How does cancellation work?</summary><p>Billing is handled securely by Stripe. Subscription cancellation requires a Stripe billing-portal link or direct support workflow, which must be configured before production launch.</p></details>
           <details><summary>Where does my support go?</summary><p>Membership supports the ongoing research, recording, production, maintenance, and thoughtful organization of The Human Experience archive.</p></details>
         </div>

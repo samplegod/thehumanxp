@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  handle        String   @unique
+  bio           String   @default("")
+  image         String?
+  location      String?
+  showLocation  Boolean  @default(false)
+  interests     String   @default("[]")
+  role          String   @default("member")
+  membership    String   @default("free")
+  createdAt     DateTime @default(now())
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+  bookmarks     Bookmark[]
+  notifications Notification[] @relation("notificationRecipient")
+  sentNotifications Notification[] @relation("notificationActor")
+  messagesSent  Message[] @relation("messageSender")
+  messagesReceived Message[] @relation("messageRecipient")
+  following     Follow[] @relation("following")
+  followers     Follow[] @relation("followers")
+  blocks        Block[] @relation("blocker")
+  blockedBy     Block[] @relation("blocked")
+  reports       Report[] @relation("reporter")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  body        String
+  imageUrl    String?
+  linkUrl     String?
+  topic       String?
+  episode     Int?
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  likes       Like[]
+  comments    Comment[]
+  bookmarks   Bookmark[]
+  reports     Report[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  postId    String
+  authorId  String
+  parentId  String?
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent    Comment? @relation("replies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("replies")
+  createdAt DateTime @default(now())
+}
+
+model Like {
+  userId String
+  postId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@id([userId, postId])
+}
+
+model Bookmark {
+  userId String
+  postId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@id([userId, postId])
+}
+
+model Follow {
+  followerId String
+  followingId String
+  status String @default("accepted")
+  follower User @relation("following", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("followers", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@id([followerId, followingId])
+}
+
+model Block {
+  blockerId String
+  blockedId String
+  blocker User @relation("blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  @@id([blockerId, blockedId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  body        String
+  senderId    String
+  recipientId String
+  readAt      DateTime?
+  createdAt   DateTime @default(now())
+  sender      User @relation("messageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User @relation("messageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  type        String
+  text        String
+  recipientId String
+  actorId     String?
+  href        String?
+  readAt      DateTime?
+  createdAt   DateTime @default(now())
+  recipient   User @relation("notificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor       User? @relation("notificationActor", fields: [actorId], references: [id])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  reason     String
+  status     String   @default("open")
+  reporterId String
+  postId     String?
+  reporter   User @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  post       Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}
