@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EmuFleet Manager</title>
+  <style>
+    :root {
+      --bg: #eef2f5;
+      --ink: #172026;
+      --muted: #61717d;
+      --line: #d7e0e6;
+      --panel: #ffffff;
+      --panel-soft: #f7f9fb;
+      --blue: #246bfe;
+      --blue-dark: #1554d2;
+      --green: #16805b;
+      --amber: #a06400;
+      --red: #b42318;
+      --violet: #6f4ae8;
+      --shadow: 0 18px 42px rgba(29, 42, 53, 0.12);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(36, 107, 254, 0.08) 0 1px, transparent 1px),
+        linear-gradient(0deg, rgba(36, 107, 254, 0.06) 0 1px, transparent 1px),
+        var(--bg);
+      background-size: 48px 48px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 16px;
+      color: #edf4fb;
+      background: #111b24;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 6px 22px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #246bfe, #19a47a);
+      font-weight: 900;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.1;
+    }
+
+    .brand span {
+      color: #9eb1c0;
+      font-size: 12px;
+    }
+
+    .nav-group {
+      padding: 12px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-title {
+      margin: 0 8px 8px;
+      color: #7f93a4;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .nav-button {
+      width: 100%;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: var(--radius);
+      color: #dbe7ef;
+      background: transparent;
+      text-align: left;
+    }
+
+    .nav-button.active,
+    .nav-button:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #ffffff;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .status-pill::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .running {
+      color: var(--green);
+      background: #e8f6ef;
+      border-color: #bfe5d4;
+    }
+
+    .paused {
+      color: var(--amber);
+      background: #fff4dd;
+      border-color: #f1d398;
+    }
+
+    .stopped {
+      color: var(--muted);
+      background: #edf1f4;
+      border-color: #d4dde4;
+    }
+
+    .error {
+      color: var(--red);
+      background: #feeceb;
+      border-color: #fac5c1;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .button {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 12px;
+      color: var(--ink);
+      background: var(--panel);
+      box-shadow: 0 1px 0 rgba(18, 31, 42, 0.04);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      color: #ffffff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .button.primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .button.danger {
+      color: var(--red);
+      border-color: #f2b5b0;
+      background: #fff8f7;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .button.primary .icon {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      min-height: 94px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .metric-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      margin: 9px 0 0;
+      font-size: 29px;
+      font-weight: 900;
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 178px 178px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      min-width: 0;
+      min-height: 42px;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 12px;
+      color: var(--ink);
+      background: var(--panel);
+      outline: none;
+    }
+
+    .field:focus {
+      border-color: rgba(36, 107, 254, 0.7);
+      box-shadow: 0 0 0 3px rgba(36, 107, 254, 0.14);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e6edf1;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #60707b;
+      background: #f8fafb;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    tr.selected {
+      background: #eef5ff;
+    }
+
+    tr:hover {
+      background: #f6f9fc;
+    }
+
+    .device-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    .phone {
+      width: 32px;
+      height: 44px;
+      border: 2px solid #16232d;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #dcecff, #ffffff);
+      box-shadow: inset 0 -5px 0 rgba(22, 35, 45, 0.08);
+      flex: 0 0 auto;
+    }
+
+    .phone::after {
+      content: "";
+      width: 12px;
+      height: 3px;
+      border-radius: 999px;
+      background: #16232d;
+      align-self: end;
+      margin-bottom: 4px;
+    }
+
+    .device-name strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .device-name span,
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+      background: #eef1f5;
+      color: #41515d;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .action-stack {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mini-button {
+      min-width: 34px;
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: #25323b;
+      background: #ffffff;
+      font-weight: 900;
+    }
+
+    .mini-button:hover {
+      border-color: #a9b9c4;
+      background: #f5f8fb;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: #4f606c;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    textarea.field {
+      min-height: 74px;
+      padding-top: 10px;
+      resize: vertical;
+    }
+
+    .profile-row,
+    .task-row,
+    .log-line {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e7edf2;
+    }
+
+    .profile-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border-top: 0;
+      border-right: 0;
+      border-left: 0;
+      background: #ffffff;
+      text-align: left;
+      color: inherit;
+    }
+
+    .profile-row:hover {
+      background: #f5f9fc;
+    }
+
+    .profile-row strong,
+    .task-row strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .profile-row span,
+    .task-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .queue {
+      max-height: 228px;
+      overflow-y: auto;
+    }
+
+    .task-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: #e4ebf0;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #18a779);
+    }
+
+    .log {
+      max-height: 240px;
+      overflow-y: auto;
+      background: #111b24;
+    }
+
+    .log-line {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 10px;
+      color: #dce7ef;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+    }
+
+    .log-line time {
+      color: #83a0b5;
+    }
+
+    .empty {
+      padding: 28px 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(13, 22, 30, 0.55);
+      z-index: 5;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .dialog {
+      width: min(520px, 100%);
+      border-radius: var(--radius);
+      border: 1px solid #c8d4dc;
+      background: #ffffff;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      background: #f8fafb;
+    }
+
+    @media (max-width: 1120px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .nav-group {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+      }
+
+      .nav-title {
+        display: none;
+      }
+
+      .nav-button {
+        width: auto;
+        flex: 0 0 auto;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .main {
+        padding: 14px;
+      }
+
+      .topbar,
+      .panel-header {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+
+      .metrics,
+      .control-row {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <div class="brand">
+        <div class="brand-mark">EF</div>
+        <div>
+          <strong>EmuFleet</strong>
+          <span>Cell emulator control</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Operate</p>
+        <button class="nav-button active" type="button"><span class="nav-icon">D</span>Devices</button>
+        <button class="nav-button" type="button"><span class="nav-icon">B</span>Batch Control</button>
+        <button class="nav-button" type="button"><span class="nav-icon">A</span>Automation</button>
+        <button class="nav-button" type="button"><span class="nav-icon">P</span>Profiles</button>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Connection</p>
+        <button class="nav-button" type="button"><span class="nav-icon">ADB</span>ADB Bridge</button>
+        <button class="nav-button" type="button"><span class="nav-icon">API</span>Local Agent</button>
+        <button class="nav-button" type="button"><span class="nav-icon">LOG</span>Run Logs</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Multi-Emulator Manager</h1>
+          <p class="subtitle">Manage Android phone emulator instances, assign profiles, run batch actions, monitor health, and prepare commands for a native ADB or cloud-emulator bridge.</p>
+        </div>
+        <div class="toolbar">
+          <button class="button" type="button" id="selectAllBtn"><span class="icon">✓</span>Select all</button>
+          <button class="button primary" type="button" id="launchSelectedBtn"><span class="icon">▶</span>Launch selected</button>
+          <button class="button danger" type="button" id="stopSelectedBtn"><span class="icon">■</span>Stop selected</button>
+        </div>
+      </header>
+
+      <section class="metrics" aria-label="Fleet metrics">
+        <article class="metric">
+          <p class="metric-label">Total instances</p>
+          <p class="metric-value" id="totalMetric">0</p>
+        </article>
+        <article class="metric">
+          <p class="metric-label">Running</p>
+          <p class="metric-value" id="runningMetric">0</p>
+        </article>
+        <article class="metric">
+          <p class="metric-label">Selected</p>
+          <p class="metric-value" id="selectedMetric">0</p>
+        </article>
+        <article class="metric">
+          <p class="metric-label">Queued tasks</p>
+          <p class="metric-value" id="queueMetric">0</p>
+        </article>
+      </section>
+
+      <section class="control-row" aria-label="Filters">
+        <input class="field" id="searchInput" type="search" placeholder="Search device, profile, tag, or proxy" />
+        <select class="field" id="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="running">Running</option>
+          <option value="paused">Paused</option>
+          <option value="stopped">Stopped</option>
+          <option value="error">Needs attention</option>
+        </select>
+        <select class="field" id="groupFilter">
+          <option value="all">All groups</option>
+        </select>
+      </section>
+
+      <div class="workspace">
+        <section class="panel" aria-label="Device table">
+          <div class="panel-header">
+            <h2>Instances</h2>
+            <div class="toolbar">
+              <button class="button" type="button" id="addDeviceBtn"><span class="icon">+</span>Add emulator</button>
+              <button class="button" type="button" id="cloneSelectedBtn"><span class="icon">⧉</span>Clone selected</button>
+              <button class="button" type="button" id="syncBtn"><span class="icon">↻</span>Refresh health</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th aria-label="Selection"></th>
+                  <th>Device</th>
+                  <th>Status</th>
+                  <th>Profile</th>
+                  <th>Proxy</th>
+                  <th>CPU/RAM</th>
+                  <th>Last action</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="deviceRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="side-stack">
+          <section class="panel" aria-label="Automation builder">
+            <div class="panel-header">
+              <h2>Batch Task</h2>
+              <span class="tag" id="selectedHint">0 selected</span>
+            </div>
+            <div class="form-grid">
+              <label>
+                Action
+                <select class="field" id="taskAction">
+                  <option value="Install APK">Install APK</option>
+                  <option value="Run Script">Run Script</option>
+                  <option value="Clear Cache">Clear Cache</option>
+                  <option value="Rotate Proxy">Rotate Proxy</option>
+                  <option value="Snapshot">Snapshot</option>
+                </select>
+              </label>
+              <label>
+                Payload
+                <textarea class="field" id="taskPayload" placeholder="Example: /apps/build.apk or adb shell input tap 540 1600"></textarea>
+              </label>
+              <button class="button primary" type="button" id="queueTaskBtn"><span class="icon">+</span>Queue task</button>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Profiles">
+            <div class="panel-header">
+              <h2>Profiles</h2>
+              <button class="mini-button" type="button" id="assignProfileBtn" title="Assign selected profile to selected devices">→</button>
+            </div>
+            <div id="profileList"></div>
+          </section>
+
+          <section class="panel" aria-label="Task queue">
+            <div class="panel-header">
+              <h2>Task Queue</h2>
+              <button class="mini-button" type="button" id="runQueueBtn" title="Run queued tasks">▶</button>
+            </div>
+            <div class="queue" id="taskQueue"></div>
+          </section>
+
+          <section class="panel" aria-label="Activity log">
+            <div class="panel-header">
+              <h2>Activity Log</h2>
+              <button class="mini-button" type="button" id="clearLogBtn" title="Clear log">×</button>
+            </div>
+            <div class="log" id="activityLog"></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="deviceModal" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+    <div class="dialog">
+      <div class="panel-header">
+        <h2 id="deviceModalTitle">Add Emulator</h2>
+        <button class="mini-button" type="button" id="closeModalBtn" aria-label="Close">×</button>
+      </div>
+      <form id="deviceForm">
+        <div class="form-grid">
+          <label>
+            Name
+            <input class="field" id="deviceName" required placeholder="Pixel-09" />
+          </label>
+          <label>
+            Group
+            <input class="field" id="deviceGroup" required placeholder="QA Cluster" />
+          </label>
+          <label>
+            Profile
+            <select class="field" id="deviceProfile"></select>
+          </label>
+          <label>
+            Proxy
+            <input class="field" id="deviceProxy" placeholder="socks5://127.0.0.1:9050" />
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button class="button" type="button" id="cancelModalBtn">Cancel</button>
+          <button class="button primary" type="submit"><span class="icon">+</span>Create emulator</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const storageKey = 'emufleet-state-v1';
+
+    const defaultState = {
+      selectedProfile: 'Social QA',
+      profiles: [
+        { name: 'Social QA', os: 'Android 14', resolution: '1080 x 2400', apps: 'Telegram, Chrome, Files' },
+        { name: 'Payments Lab', os: 'Android 13', resolution: '720 x 1600', apps: 'Wallet, Browser, Test build' },
+        { name: 'Low Memory', os: 'Android 12', resolution: '540 x 960', apps: 'Lite app, Logger' },
+      ],
+      devices: [
+        { id: 1, name: 'Pixel-01', group: 'Growth', status: 'running', profile: 'Social QA', proxy: 'us-east-01.proxy:8010', cpu: 34, ram: 61, selected: true, lastAction: 'Launched 4m ago' },
+        { id: 2, name: 'Pixel-02', group: 'Growth', status: 'paused', profile: 'Social QA', proxy: 'us-east-02.proxy:8010', cpu: 4, ram: 42, selected: true, lastAction: 'Snapshot saved' },
+        { id: 3, name: 'Galaxy-03', group: 'Payments', status: 'stopped', profile: 'Payments Lab', proxy: 'eu-west-01.proxy:8020', cpu: 0, ram: 0, selected: false, lastAction: 'Stopped 1h ago' },
+        { id: 4, name: 'Moto-04', group: 'Regression', status: 'error', profile: 'Low Memory', proxy: 'No proxy', cpu: 0, ram: 0, selected: false, lastAction: 'ADB timeout' },
+        { id: 5, name: 'Pixel-05', group: 'Regression', status: 'running', profile: 'Low Memory', proxy: 'us-west-03.proxy:8010', cpu: 57, ram: 72, selected: false, lastAction: 'Script completed' },
+      ],
+      queue: [
+        { id: 1, action: 'Install APK', payload: '/builds/app-release.apk', targetCount: 2, progress: 35 },
+        { id: 2, action: 'Snapshot', payload: 'pre-login-baseline', targetCount: 1, progress: 0 },
+      ],
+      logs: [
+        { time: '09:16', message: 'Connected to local control agent on port 4555' },
+        { time: '09:18', message: 'Pixel-01 launched with Social QA profile' },
+        { time: '09:20', message: 'Galaxy-03 stopped by batch command' },
+      ],
+    };
+
+    const state = loadState();
+
+    const els = {
+      rows: document.getElementById('deviceRows'),
+      totalMetric: document.getElementById('totalMetric'),
+      runningMetric: document.getElementById('runningMetric'),
+      selectedMetric: document.getElementById('selectedMetric'),
+      queueMetric: document.getElementById('queueMetric'),
+      selectedHint: document.getElementById('selectedHint'),
+      search: document.getElementById('searchInput'),
+      statusFilter: document.getElementById('statusFilter'),
+      groupFilter: document.getElementById('groupFilter'),
+      profileList: document.getElementById('profileList'),
+      taskQueue: document.getElementById('taskQueue'),
+      activityLog: document.getElementById('activityLog'),
+      modal: document.getElementById('deviceModal'),
+      profileSelect: document.getElementById('deviceProfile'),
+      form: document.getElementById('deviceForm'),
+    };
+
+    function loadState() {
+      const saved = localStorage.getItem(storageKey);
+      if (!saved) {
+        return structuredClone(defaultState);
+      }
+
+      try {
+        return { ...structuredClone(defaultState), ...JSON.parse(saved) };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function persist() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function now() {
+      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function log(message) {
+      state.logs.unshift({ time: now(), message });
+      state.logs = state.logs.slice(0, 80);
+      persist();
+      renderLogs();
+    }
+
+    function selectedDevices() {
+      return state.devices.filter((device) => device.selected);
+    }
+
+    function filteredDevices() {
+      const query = els.search.value.trim().toLowerCase();
+      const status = els.statusFilter.value;
+      const group = els.groupFilter.value;
+
+      return state.devices.filter((device) => {
+        const matchesQuery = [device.name, device.group, device.profile, device.proxy, device.status]
+          .join(' ')
+          .toLowerCase()
+          .includes(query);
+        const matchesStatus = status === 'all' || device.status === status;
+        const matchesGroup = group === 'all' || device.group === group;
+        return matchesQuery && matchesStatus && matchesGroup;
+      });
+    }
+
+    function renderMetrics() {
+      const selected = selectedDevices().length;
+      els.totalMetric.textContent = state.devices.length;
+      els.runningMetric.textContent = state.devices.filter((device) => device.status === 'running').length;
+      els.selectedMetric.textContent = selected;
+      els.queueMetric.textContent = state.queue.length;
+      els.selectedHint.textContent = `${selected} selected`;
+    }
+
+    function renderGroupFilter() {
+      const current = els.groupFilter.value;
+      const groups = [...new Set(state.devices.map((device) => device.group))].sort();
+      els.groupFilter.innerHTML = '<option value="all">All groups</option>';
+      groups.forEach((group) => {
+        const option = document.createElement('option');
+        option.value = group;
+        option.textContent = group;
+        els.groupFilter.append(option);
+      });
+      els.groupFilter.value = groups.includes(current) ? current : 'all';
+    }
+
+    function renderDevices() {
+      const rows = filteredDevices();
+      els.rows.innerHTML = '';
+
+      if (rows.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = '<td colspan="8"><div class="empty">No emulators match the current filters.</div></td>';
+        els.rows.append(emptyRow);
+        return;
+      }
+
+      rows.forEach((device) => {
+        const tr = document.createElement('tr');
+        tr.className = device.selected ? 'selected' : '';
+        tr.innerHTML = `
+          <td><input type="checkbox" ${device.selected ? 'checked' : ''} aria-label="Select ${device.name}" data-select="${device.id}"></td>
+          <td>
+            <div class="device-name">
+              <div class="phone" aria-hidden="true"></div>
+              <div>
+                <strong>${device.name}</strong>
+                <span>${device.group}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="status-pill ${device.status}">${labelStatus(device.status)}</span></td>
+          <td><span class="tag">${device.profile}</span></td>
+          <td>${device.proxy}</td>
+          <td><strong>${device.cpu}%</strong> / <span class="muted">${device.ram}%</span></td>
+          <td>${device.lastAction}</td>
+          <td>
+            <div class="action-stack">
+              <button class="mini-button" type="button" data-action="launch" data-id="${device.id}" title="Launch">▶</button>
+              <button class="mini-button" type="button" data-action="pause" data-id="${device.id}" title="Pause">Ⅱ</button>
+              <button class="mini-button" type="button" data-action="stop" data-id="${device.id}" title="Stop">■</button>
+              <button class="mini-button" type="button" data-action="clone" data-id="${device.id}" title="Clone">⧉</button>
+            </div>
+          </td>
+        `;
+        els.rows.append(tr);
+      });
+    }
+
+    function labelStatus(status) {
+      const labels = {
+        running: 'Running',
+        paused: 'Paused',
+        stopped: 'Stopped',
+        error: 'Attention',
+      };
+      return labels[status] || status;
+    }
+
+    function renderProfiles() {
+      els.profileList.innerHTML = '';
+      els.profileSelect.innerHTML = '';
+
+      state.profiles.forEach((profile) => {
+        const option = document.createElement('option');
+        option.value = profile.name;
+        option.textContent = profile.name;
+        els.profileSelect.append(option);
+
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'profile-row';
+        row.dataset.profile = profile.name;
+        row.innerHTML = `
+          <span>
+            <strong>${profile.name}</strong>
+            <span>${profile.os} · ${profile.resolution} · ${profile.apps}</span>
+          </span>
+          <span class="tag">${state.selectedProfile === profile.name ? 'Active' : 'Use'}</span>
+        `;
+        els.profileList.append(row);
+      });
+    }
+
+    function renderQueue() {
+      els.taskQueue.innerHTML = '';
+      if (state.queue.length === 0) {
+        els.taskQueue.innerHTML = '<div class="empty">No queued tasks.</div>';
+        return;
+      }
+
+      state.queue.forEach((task) => {
+        const row = document.createElement('div');
+        row.className = 'task-row';
+        row.innerHTML = `
+          <div>
+            <strong>${task.action}</strong>
+            <span>${task.targetCount} target${task.targetCount === 1 ? '' : 's'} · ${task.payload || 'No payload'}</span>
+          </div>
+          <div class="progress" aria-label="${task.progress}% complete"><span style="width:${task.progress}%"></span></div>
+        `;
+        els.taskQueue.append(row);
+      });
+    }
+
+    function renderLogs() {
+      els.activityLog.innerHTML = '';
+      if (state.logs.length === 0) {
+        els.activityLog.innerHTML = '<div class="empty">No activity yet.</div>';
+        return;
+      }
+
+      state.logs.forEach((entry) => {
+        const row = document.createElement('div');
+        row.className = 'log-line';
+        row.innerHTML = `<time>${entry.time}</time><span>${entry.message}</span>`;
+        els.activityLog.append(row);
+      });
+    }
+
+    function render() {
+      renderGroupFilter();
+      renderMetrics();
+      renderDevices();
+      renderProfiles();
+      renderQueue();
+      renderLogs();
+      persist();
+    }
+
+    function updateSelected(ids, patch) {
+      state.devices.forEach((device) => {
+        if (ids.includes(device.id)) {
+          Object.assign(device, typeof patch === 'function' ? patch(device) : patch);
+        }
+      });
+    }
+
+    function launchDevices(ids) {
+      updateSelected(ids, () => ({
+        status: 'running',
+        cpu: randomInt(22, 68),
+        ram: randomInt(38, 82),
+        lastAction: 'Launched just now',
+      }));
+      log(`Launched ${ids.length} emulator${ids.length === 1 ? '' : 's'}`);
+      render();
+    }
+
+    function stopDevices(ids) {
+      updateSelected(ids, { status: 'stopped', cpu: 0, ram: 0, lastAction: 'Stopped just now' });
+      log(`Stopped ${ids.length} emulator${ids.length === 1 ? '' : 's'}`);
+      render();
+    }
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function nextId(list) {
+      return Math.max(0, ...list.map((item) => item.id)) + 1;
+    }
+
+    function cloneDevice(device) {
+      const copy = {
+        ...device,
+        id: nextId(state.devices),
+        name: `${device.name}-copy`,
+        status: 'stopped',
+        cpu: 0,
+        ram: 0,
+        selected: false,
+        lastAction: 'Cloned just now',
+      };
+      state.devices.push(copy);
+      log(`Cloned ${device.name} as ${copy.name}`);
+    }
+
+    els.rows.addEventListener('change', (event) => {
+      const id = Number(event.target.dataset.select);
+      if (!id) {
+        return;
+      }
+      const device = state.devices.find((entry) => entry.id === id);
+      device.selected = event.target.checked;
+      render();
+    });
+
+    els.rows.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action]');
+      if (!button) {
+        return;
+      }
+      const id = Number(button.dataset.id);
+      const device = state.devices.find((entry) => entry.id === id);
+      if (!device) {
+        return;
+      }
+
+      if (button.dataset.action === 'launch') {
+        launchDevices([id]);
+      }
+      if (button.dataset.action === 'pause') {
+        Object.assign(device, { status: 'paused', cpu: 3, ram: Math.max(device.ram, 34), lastAction: 'Paused just now' });
+        log(`Paused ${device.name}`);
+        render();
+      }
+      if (button.dataset.action === 'stop') {
+        stopDevices([id]);
+      }
+      if (button.dataset.action === 'clone') {
+        cloneDevice(device);
+        render();
+      }
+    });
+
+    document.getElementById('selectAllBtn').addEventListener('click', () => {
+      const shouldSelect = selectedDevices().length !== state.devices.length;
+      state.devices.forEach((device) => {
+        device.selected = shouldSelect;
+      });
+      render();
+    });
+
+    document.getElementById('launchSelectedBtn').addEventListener('click', () => {
+      const ids = selectedDevices().map((device) => device.id);
+      if (ids.length > 0) {
+        launchDevices(ids);
+      }
+    });
+
+    document.getElementById('stopSelectedBtn').addEventListener('click', () => {
+      const ids = selectedDevices().map((device) => device.id);
+      if (ids.length > 0) {
+        stopDevices(ids);
+      }
+    });
+
+    document.getElementById('cloneSelectedBtn').addEventListener('click', () => {
+      const devices = selectedDevices();
+      devices.forEach(cloneDevice);
+      render();
+    });
+
+    document.getElementById('syncBtn').addEventListener('click', () => {
+      state.devices.forEach((device) => {
+        if (device.status === 'running') {
+          device.cpu = randomInt(18, 72);
+          device.ram = randomInt(35, 86);
+          device.lastAction = 'Health refreshed';
+        }
+      });
+      log('Refreshed emulator health metrics');
+      render();
+    });
+
+    document.getElementById('queueTaskBtn').addEventListener('click', () => {
+      const targetCount = selectedDevices().length;
+      if (targetCount === 0) {
+        log('No selected devices for queued task');
+        return;
+      }
+      const action = document.getElementById('taskAction').value;
+      const payload = document.getElementById('taskPayload').value.trim();
+      state.queue.push({ id: nextId(state.queue), action, payload, targetCount, progress: 0 });
+      log(`Queued ${action} for ${targetCount} selected emulator${targetCount === 1 ? '' : 's'}`);
+      render();
+    });
+
+    document.getElementById('runQueueBtn').addEventListener('click', () => {
+      if (state.queue.length === 0) {
+        return;
+      }
+      state.queue = state.queue.map((task) => ({ ...task, progress: Math.min(100, task.progress + randomInt(35, 70)) }));
+      const complete = state.queue.filter((task) => task.progress >= 100);
+      state.queue = state.queue.filter((task) => task.progress < 100);
+      complete.forEach((task) => log(`Completed ${task.action} for ${task.targetCount} emulator${task.targetCount === 1 ? '' : 's'}`));
+      if (complete.length === 0) {
+        log('Advanced queued tasks');
+      }
+      render();
+    });
+
+    document.getElementById('clearLogBtn').addEventListener('click', () => {
+      state.logs = [];
+      render();
+    });
+
+    els.profileList.addEventListener('click', (event) => {
+      const row = event.target.closest('[data-profile]');
+      if (!row) {
+        return;
+      }
+      state.selectedProfile = row.dataset.profile;
+      render();
+    });
+
+    document.getElementById('assignProfileBtn').addEventListener('click', () => {
+      const devices = selectedDevices();
+      if (devices.length === 0) {
+        log('No selected devices for profile assignment');
+        return;
+      }
+      devices.forEach((device) => {
+        device.profile = state.selectedProfile;
+        device.lastAction = `Assigned ${state.selectedProfile}`;
+      });
+      log(`Assigned ${state.selectedProfile} to ${devices.length} emulator${devices.length === 1 ? '' : 's'}`);
+      render();
+    });
+
+    [els.search, els.statusFilter, els.groupFilter].forEach((control) => {
+      control.addEventListener('input', render);
+    });
+
+    document.getElementById('addDeviceBtn').addEventListener('click', () => {
+      els.form.reset();
+      els.profileSelect.value = state.selectedProfile;
+      els.modal.classList.add('open');
+      document.getElementById('deviceName').focus();
+    });
+
+    function closeModal() {
+      els.modal.classList.remove('open');
+    }
+
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('cancelModalBtn').addEventListener('click', closeModal);
+    els.modal.addEventListener('click', (event) => {
+      if (event.target === els.modal) {
+        closeModal();
+      }
+    });
+
+    els.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const device = {
+        id: nextId(state.devices),
+        name: document.getElementById('deviceName').value.trim(),
+        group: document.getElementById('deviceGroup').value.trim(),
+        profile: els.profileSelect.value,
+        proxy: document.getElementById('deviceProxy').value.trim() || 'No proxy',
+        status: 'stopped',
+        cpu: 0,
+        ram: 0,
+        selected: true,
+        lastAction: 'Created just now',
+      };
+      state.devices.push(device);
+      log(`Created emulator ${device.name}`);
+      closeModal();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

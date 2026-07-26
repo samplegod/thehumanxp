@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Episode Release Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="release-page">
+    <main class="release-shell">
+      <header class="release-header">
+        <p class="release-kicker">The Human Experience</p>
+        <h1>Episode Release Portal</h1>
+        <p>Publish new episodes to your API and review the latest releases in one place.</p>
+        <nav class="release-links">
+          <a href="/membership.html">Membership Page</a>
+          <a href="/index.html">Snake Game</a>
+        </nav>
+      </header>
+
+      <section class="release-card">
+        <h2>Publish New Episode</h2>
+        <form id="release-form" class="release-form">
+          <label>
+            API Base URL
+            <input id="api-base" name="apiBase" type="url" value="http://localhost:3000" required />
+          </label>
+          <label>
+            Episode Title
+            <input id="title" name="title" type="text" placeholder="Episode title" required />
+          </label>
+          <label>
+            Description
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              placeholder="Short release description"
+              required
+            ></textarea>
+          </label>
+          <label class="release-checkbox">
+            <input id="is-premium" name="isPremium" type="checkbox" />
+            Premium (members-only)
+          </label>
+
+          <button type="submit">Release Episode</button>
+          <p id="release-status" class="release-status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="release-card">
+        <div class="release-list-header">
+          <h2>Recent Episodes</h2>
+          <button id="refresh" type="button">Refresh</button>
+        </div>
+        <ul id="episode-list" class="episode-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="src/release-portal.js"></script>
+  </body>
+</html>
