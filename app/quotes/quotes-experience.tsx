@@ -6,9 +6,10 @@ import { useMemo, useState } from "react";
 
 import {
   formatTimestamp,
-  quotes,
   timestampedYouTubeUrl,
 } from "@/lib/quotes";
+import { searchQuotes } from "@/lib/quote-search";
+import { quoteSearchIndex as quotes } from "@/lib/quote-search-index.generated";
 
 export function QuotesExperience() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,18 +31,12 @@ export function QuotesExperience() {
   );
 
   const visibleQuotes = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return quotes.filter((quote) => {
+    const episodeQuotes = quotes.filter((quote) => {
       const matchesEpisode =
         episode === "all" || String(quote.episodeNumber) === episode;
-      const matchesQuery =
-        !normalizedQuery ||
-        [quote.text, quote.speaker, quote.episodeTitle]
-          .join(" ")
-          .toLowerCase()
-          .includes(normalizedQuery);
-      return matchesEpisode && matchesQuery;
+      return matchesEpisode;
     });
+    return searchQuotes(episodeQuotes, query);
   }, [episode, query]);
 
   return (
@@ -81,11 +76,11 @@ export function QuotesExperience() {
         <h1>Signals from<br /><em>the conversation.</em></h1>
         <p>
           A growing collection of memorable ideas from the HXP archive—each
-          linked to the exact moment it was spoken.
+          linked back to its verified source.
         </p>
         <div className="quotes-tally">
           <span><b>{quotes.length}</b> selected passages</span>
-          <span><b>{episodes.length}</b> conversation</span>
+          <span><b>{episodes.length}</b> {episodes.length === 1 ? "conversation" : "conversations"}</span>
         </div>
       </section>
 
@@ -159,10 +154,18 @@ export function QuotesExperience() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={(event) => event.stopPropagation()}
-                    aria-label={`Watch ${quote.speaker} at ${formatTimestamp(quote.timestampSeconds)} on YouTube`}
+                    aria-label={
+                      quote.youtubeUrl && quote.timestampSeconds !== null
+                        ? `Watch ${quote.speaker} at ${formatTimestamp(quote.timestampSeconds)} on YouTube`
+                        : `Read the source transcript for ${quote.speaker}, episode ${quote.episodeNumber}`
+                    }
                   >
-                    Watch on YouTube
-                    <span>{formatTimestamp(quote.timestampSeconds)}</span>
+                    {quote.youtubeUrl && quote.timestampSeconds !== null
+                      ? "Watch on YouTube"
+                      : "Read transcript"}
+                    {quote.timestampSeconds !== null && (
+                      <span>{formatTimestamp(quote.timestampSeconds)}</span>
+                    )}
                     <ExternalLink aria-hidden="true" />
                   </a>
                 </div>

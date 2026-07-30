@@ -4,9 +4,11 @@ export type Quote = {
   speaker: string;
   episodeNumber: number;
   episodeTitle: string;
-  youtubeUrl: string;
-  timestampSeconds: number;
-  transcriptSource: "local-audio-transcription";
+  youtubeUrl: string | null;
+  timestampSeconds: number | null;
+  transcriptSource: "local-audio-transcription" | "wordpress-transcript";
+  transcriptUrl?: string;
+  episodeUrl?: string | null;
 };
 
 export const quotes: Quote[] = [
@@ -263,7 +265,10 @@ export const quotes: Quote[] = [
 ];
 
 export function timestampedYouTubeUrl(quote: Quote) {
-  return `${quote.youtubeUrl}&t=${quote.timestampSeconds}s`;
+  if (quote.youtubeUrl && quote.timestampSeconds !== null) {
+    return `${quote.youtubeUrl}&t=${quote.timestampSeconds}s`;
+  }
+  return quote.transcriptUrl ?? quote.episodeUrl ?? "#";
 }
 
 export function formatTimestamp(seconds: number) {
