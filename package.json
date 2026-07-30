@@ -11,7 +11,10 @@
     "test": "node --test tests/api.test.js",
     "db:generate": "prisma generate",
     "db:migrate": "node scripts/migrate-community.mjs",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "quotes:transcripts": "node scripts/fetch-transcript-quotes.mjs && npm run quotes:index",
+    "quotes:index": "node scripts/build-quote-index.mjs",
+    "quotes:check": "node scripts/check-quote-search.mjs"
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"
@@ -19,6 +22,7 @@
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "@radix-ui/react-slot": "^1.2.3",
+    "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -25,12 +25,12 @@ import { episodes } from "@/lib/episodes";
 
 const featured = episodes[0];
 const trustedGuests = [
-  "Wim Hof",
-  "Graham Hancock",
-  "James Clear",
-  "Rupert Sheldrake",
-  "Mark Manson",
-  "Dr. Bruce Lipton",
+  { name: "Wim Hof", href: "https://www.youtube.com/watch?v=GJPdd2nJP8k" },
+  { name: "Graham Hancock", href: "https://www.youtube.com/watch?v=1mcl_v3H4sA" },
+  { name: "James Clear", href: "https://www.youtube.com/watch?v=SJLw02QjoQQ" },
+  { name: "Rupert Sheldrake", href: "https://www.youtube.com/watch?v=H9gxrkQXRGU" },
+  { name: "Mark Manson", href: "https://www.youtube.com/watch?v=nqbxGhoe_jo" },
+  { name: "Dr. Bruce Lipton", href: "https://www.youtube.com/watch?v=r-xfE1mEwk4" },
 ];
 const threads = [
   {
@@ -137,7 +137,19 @@ function TrustBand() {
   return (
     <section className="trust-band" aria-label="Notable podcast guests">
       <p>Conversations with</p>
-      <div>{trustedGuests.map((guest) => <span key={guest}>{guest}</span>)}</div>
+      <div>
+        {trustedGuests.map((guest) => (
+          <a
+            key={guest.name}
+            href={guest.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Watch the ${guest.name} episode on YouTube`}
+          >
+            {guest.name}
+          </a>
+        ))}
+      </div>
     </section>
   );
 }
