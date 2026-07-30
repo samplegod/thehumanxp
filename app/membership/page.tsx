@@ -19,6 +19,7 @@ const included = [
 
 const roadmap = [
   ["The listening room", "A member community for thoughtful reflections, episode discussions, and connection."],
+  ["Behind-the-scenes access", "A closer look at the research, preparation, recording, and production behind each conversation."],
   ["Deeper listening paths", "Guided sequences through consciousness, science, healing, and human potential."],
   ["Closer to the conversation", "Follow listeners with shared interests and continue the inquiry together."],
 ];
@@ -64,10 +65,29 @@ export default async function MembershipPage({
       </section>
 
       <section id="pricing" className="membership-pricing">
-        <div className="pricing-heading"><p className="conversion-kicker">Choose your support</p><h2>One membership.<br />Two ways to sustain it.</h2><p>The prices below reflect the membership plans already configured for this project.</p></div>
+        <div className="pricing-heading"><p className="conversion-kicker">Choose your support</p><h2>One shared purpose.<br />Three ways to sustain it.</h2><p>Every contribution helps independent, thoughtful conversations continue.</p></div>
         <div className="pricing-grid">
+          <Plan
+            name="Supporter"
+            price="$3"
+            suffix="/ month"
+            plan="supporter"
+            copy="A simple way to help The Human Experience survive and continue producing independent conversations."
+            buttonLabel="Support the show"
+            clarification="Your support helps sustain the show. This plan does not include additional membership features."
+            supportOnly
+          />
           <Plan name="Monthly" price="$9" suffix="/ month" plan="monthly" copy="Flexible month-to-month support billed securely through Stripe." />
-          <Plan name="Annual" price="$90" suffix="/ year" plan="yearly" copy="$18 less than twelve monthly payments—the equivalent of two months." featured />
+          <Plan
+            name="God-Level Supporter"
+            price="$100"
+            suffix="/ month"
+            plan="god"
+            copy="For those who believe deeply in the mission and want to become a foundational patron of The Human Experience."
+            buttonLabel="Become a God-Level Supporter"
+            clarification="Your extraordinary patronage helps fund ambitious conversations, deeper research, independent production, and preservation of the archive—without purchasing editorial influence."
+            godLevel
+          />
         </div>
       </section>
 
@@ -75,7 +95,7 @@ export default async function MembershipPage({
         <div><p className="conversion-kicker">Questions, answered plainly</p><h2>Before you join.</h2></div>
         <div>
           <details open><summary>What do I receive immediately?</summary><p>You can explore the complete public archive, Knowledge Universe, and curated top episodes now. Your payment primarily supports continued independent production while member-specific experiences are developed.</p></details>
-          <details><summary>Is the HXP community available?</summary><p>Yes. Every listener can create a profile and join public episode discussions. Paid supporters receive a member badge and access to member-designated spaces as they are introduced.</p></details>
+          <details><summary>Is the HXP community available?</summary><p>Yes. Every listener can create a profile and join public episode discussions. Monthly and God-Level members receive a member badge and access to member-designated spaces as they are introduced; the $3 Supporter plan is support-only.</p></details>
           <details><summary>How does cancellation work?</summary><p>Billing is handled securely by Stripe. Subscription cancellation requires a Stripe billing-portal link or direct support workflow, which must be configured before production launch.</p></details>
           <details><summary>Where does my support go?</summary><p>Membership supports the ongoing research, recording, production, maintenance, and thoughtful organization of The Human Experience archive.</p></details>
         </div>
@@ -90,13 +110,40 @@ export default async function MembershipPage({
   );
 }
 
-function Plan({ name, price, suffix, plan, copy, featured = false }: { name: string; price: string; suffix: string; plan: "monthly" | "yearly"; copy: string; featured?: boolean }) {
+function Plan({
+  name,
+  price,
+  suffix,
+  plan,
+  copy,
+  buttonLabel,
+  clarification,
+  supportOnly = false,
+  godLevel = false,
+  featured = false,
+}: {
+  name: string;
+  price: string;
+  suffix: string;
+  plan: "supporter" | "monthly" | "god";
+  copy: string;
+  buttonLabel?: string;
+  clarification?: string;
+  supportOnly?: boolean;
+  godLevel?: boolean;
+  featured?: boolean;
+}) {
   return (
-    <article className={featured ? "is-featured" : ""}>
+    <article className={`${featured ? "is-featured" : ""} ${supportOnly ? "is-support-only" : ""} ${godLevel ? "is-god-level" : ""}`.trim()}>
       {featured && <span className="plan-badge">Best annual value</span>}
       <p>{name}</p><h3>{price}<small>{suffix}</small></h3><p>{copy}</p>
-      <ul>{included.map((item) => <li key={item}><Check className="size-3.5" />{item}</li>)}</ul>
-      <CheckoutLink plan={plan} className={featured ? "radiant-button" : "outline-button"}>Continue with {name.toLowerCase()} <ArrowRight className="size-4" /></CheckoutLink>
+      {supportOnly
+        ? <div className="support-only-note"><Sparkles className="size-4" /><p>{clarification}</p></div>
+        : <>
+            <ul>{included.map((item) => <li key={item}><Check className="size-3.5" />{item}</li>)}</ul>
+            {clarification && <div className="patron-note"><Sparkles className="size-4" /><p>{clarification}</p></div>}
+          </>}
+      <CheckoutLink plan={plan} className={featured ? "radiant-button" : "outline-button"}>{buttonLabel ?? `Continue with ${name.toLowerCase()}`} <ArrowRight className="size-4" /></CheckoutLink>
       <small>Secure Stripe checkout · No hidden fees</small>
     </article>
   );

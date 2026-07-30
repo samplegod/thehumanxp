@@ -3,13 +3,17 @@ import { NextResponse, type NextRequest } from "next/server";
 export const runtime = "nodejs";
 
 const plans = {
+  supporter: {
+    mode: "subscription",
+    priceEnv: "STRIPE_SUPPORTER_PRICE_ID",
+  },
   monthly: {
     mode: "subscription",
     priceEnv: "STRIPE_MONTHLY_PRICE_ID",
   },
-  yearly: {
+  god: {
     mode: "subscription",
-    priceEnv: "STRIPE_YEARLY_PRICE_ID",
+    priceEnv: "STRIPE_GOD_LEVEL_PRICE_ID",
   },
 } as const;
 
@@ -26,7 +30,7 @@ function getBaseUrl(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const plan = request.nextUrl.searchParams.get("plan");
 
-  if (plan !== "monthly" && plan !== "yearly") {
+  if (plan !== "supporter" && plan !== "monthly" && plan !== "god") {
     return NextResponse.json(
       { error: "Invalid membership plan." },
       { status: 400 },
@@ -41,7 +45,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "Stripe checkout is not configured. Set STRIPE_SECRET_KEY plus STRIPE_MONTHLY_PRICE_ID and STRIPE_YEARLY_PRICE_ID.",
+          `Stripe checkout is not configured for the ${plan} plan. Set STRIPE_SECRET_KEY and ${selectedPlan.priceEnv}.`,
       },
       { status: 503 },
     );
