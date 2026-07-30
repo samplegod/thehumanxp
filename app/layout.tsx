@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
@@ -19,6 +20,21 @@ export default function RootLayout({
       <body className="font-sans">
         {children}
         <Analytics />
+        <Script id="brevo-tracker-init" strategy="afterInteractive">
+          {`
+            window.Brevo = window.Brevo || [];
+            window.Brevo.push([
+              "init",
+              {
+                client_key: "ls90rn84xittl4e1y1frn359"
+              }
+            ]);
+          `}
+        </Script>
+        <Script
+          src="https://cdn.brevo.com/js/sdk-loader.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
