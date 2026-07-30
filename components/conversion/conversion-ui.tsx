@@ -21,7 +21,7 @@ export function TrackedLink({
   return <a href={href} className={className} onClick={() => track(event, { label, href })}>{children}</a>;
 }
 
-export function CheckoutLink({ plan, children, className }: { plan: "monthly" | "yearly"; children: React.ReactNode; className?: string }) {
+export function CheckoutLink({ plan, children, className }: { plan: "supporter" | "monthly" | "god"; children: React.ReactNode; className?: string }) {
   const [loading, setLoading] = useState(false);
   return (
     <a
