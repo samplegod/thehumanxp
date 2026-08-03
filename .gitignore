@@ -7,3 +7,5 @@ node_modules/
 *.tsbuildinfo
 prisma/dev.db
 localhost
+.vercel
+.env*
