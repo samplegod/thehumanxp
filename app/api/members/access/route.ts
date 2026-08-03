@@ -35,6 +35,7 @@ async function sendAccessEmail(request: Request, email: string) {
   const token = await createMemberToken(email, "access", "15m");
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
   const accessUrl = `${siteUrl}/api/members/verify?token=${encodeURIComponent(token)}`;
+  console.info("[members/access] sending callback", { callbackPath: `${siteUrl}/api/members/verify`, successPath: `${siteUrl}/members` });
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -42,6 +43,7 @@ async function sendAccessEmail(request: Request, email: string) {
       from,
       to: [email],
       subject: "Your private HXP archive link",
+      text: `Enter the HXP members room: ${accessUrl}\n\nThis secure link expires in 15 minutes.`,
       html: `<div style="background:#07080c;color:#f4eddf;padding:40px;font-family:Georgia,serif"><p style="color:#d9bd82;letter-spacing:.16em;text-transform:uppercase;font:11px Arial,sans-serif">The Human Experience</p><h1>Your private archive is ready.</h1><p style="color:#aaa;line-height:1.7">This secure link expires in 15 minutes.</p><p><a href="${accessUrl}" style="display:inline-block;background:#ddc187;color:#08090c;padding:15px 20px;text-decoration:none;font:700 11px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase">Enter the members room</a></p></div>`,
     }),
     signal: AbortSignal.timeout(8_000),

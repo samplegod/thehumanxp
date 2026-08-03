@@ -3,7 +3,15 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const COOKIE = "hxp_member_session";
+export const MEMBER_SESSION_COOKIE = "hxp_member_session";
+
+export const memberSessionCookieOptions = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 7,
+};
 
 function secret() {
   const value = process.env.AUTH_SECRET;
@@ -31,16 +39,10 @@ export async function readMemberToken(token: string, purpose: "access" | "sessio
 
 export async function createMemberSession(email: string) {
   const token = await createMemberToken(email, "session", "7d");
-  (await cookies()).set(COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  (await cookies()).set(MEMBER_SESSION_COOKIE, token, memberSessionCookieOptions);
 }
 
 export async function getMemberEmail() {
-  const token = (await cookies()).get(COOKIE)?.value;
+  const token = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
   return token ? readMemberToken(token, "session") : null;
 }
