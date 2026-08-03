@@ -51,10 +51,10 @@ Built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui-style components, and
    - `export STRIPE_YEARLY_PRICE_ID=price_your_yearly_price`
    - Optional: `export NEXT_PUBLIC_SITE_URL=http://localhost:3000`
    - Configure a Stripe customer billing portal or support cancellation workflow before production launch.
-3. Configure newsletter capture with Resend:
-   - `export RESEND_API_KEY=re_your_private_api_key`
-   - `export RESEND_SEGMENT_ID=your_resend_segment_id`
-   - Keep `RESEND_API_KEY` server-side. Never expose it through a `NEXT_PUBLIC_` variable.
+3. Configure newsletter capture with Kit:
+   - `export KIT_API_KEY=your_private_kit_api_key`
+   - `export KIT_FORM_ID=your_kit_form_id`
+   - Keep `KIT_API_KEY` server-side. Never expose it through a `NEXT_PUBLIC_` variable.
 4. Start the dev server:
    - `npm run dev`
 5. Open `http://localhost:3000`
