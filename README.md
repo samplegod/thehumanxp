@@ -39,7 +39,7 @@ Built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui-style components, and
 1. Copy `.env.example` values into a private `.env`.
 2. Set a long random `AUTH_SECRET`.
 3. Run `npm run db:generate`, `npm run db:migrate`, and `npm run db:seed`.
-4. The clearly labeled local demo login is `demo@thehumanxp.com` / `hxp-demo-2026`.
+4. For local development only, seed data includes a demo account. Demo credentials are never rendered in the production interface.
 
 ## Run the Next.js app
 

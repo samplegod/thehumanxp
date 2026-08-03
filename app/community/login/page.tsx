@@ -30,6 +30,5 @@ export default function CommunityLogin() {
       <button className="radiant-button" disabled={busy}>{busy ? "Opening…" : mode === "login" ? "Enter community" : "Create profile"} <ArrowRight /></button>
     </form>
     <button className="auth-switch" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(""); }}>{mode === "login" ? "New here? Create a profile" : "Already a member? Sign in"}</button>
-    <aside><b>Local demo</b><span>demo@thehumanxp.com</span><span>hxp-demo-2026</span></aside>
   </section></main>;
 }
