@@ -131,9 +131,12 @@ function FeaturedItem({ item }: { item: MemberItem }) {
 }
 
 function MemberCard({ item }: { item: MemberItem }) {
+  const href = item.href || `/members/${item.slug}`;
   return <article className="member-release">
-    <div className="member-release-art"><Image src={artFor(item.category)} alt="" fill sizes="(max-width: 720px) 92vw, 34vw" /><span>{item.eyebrow}</span><i /><b>{item.available === false ? "Arriving soon" : item.format}</b></div>
-    <div className="member-release-copy"><p>{formatDate(item.date)} {item.duration && <>· {item.duration}</>}</p><h3>{item.title}</h3><p>{item.description}</p><div className="member-tags">{item.topics.map((topic) => <span key={topic}>{topic}</span>)}</div>{item.available === false ? <span className="member-release-status">Scheduled release</span> : <Link href={item.href ?? `/members/${item.slug}`}>Open release <ArrowRight /></Link>}</div>
+    <Link className="member-release-link" href={href} target={item.href ? "_blank" : undefined} rel={item.href ? "noreferrer" : undefined}>
+      <div className="member-release-art"><Image src={artFor(item.category)} alt="" fill sizes="(max-width: 720px) 92vw, 34vw" /><span>{item.eyebrow}</span><i /><b>{item.available === false ? "Arriving soon" : item.format}</b></div>
+      <div className="member-release-copy"><p>{formatDate(item.date)} {item.duration && <>· {item.duration}</>}</p><h3>{item.title}</h3><p>{item.description}</p><div className="member-tags">{item.topics.map((topic) => <span key={topic}>{topic}</span>)}</div><span className="member-release-action">{item.available === false ? "View scheduled release" : "Open release"} <ArrowRight /></span></div>
+    </Link>
   </article>;
 }
 
