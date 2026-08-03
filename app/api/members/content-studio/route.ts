@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const categories = ["after-hours", "bonus-episodes", "research-notes", "transcripts", "downloads", "early-access", "behind-the-scenes"] as const;
@@ -29,5 +30,7 @@ export async function PUT(request: Request) {
   if (new Set(slugs).size !== slugs.length) return NextResponse.json({ error: "Every release needs a unique slug." }, { status: 400 });
   const content = { ...parsed.data, updatedAt: new Date().toISOString().slice(0, 10) };
   await writeFile(filePath, `${JSON.stringify(content, null, 2)}\n`, "utf8");
-  return NextResponse.json({ ok: true, library: content });
+  revalidatePath("/members", "page");
+  revalidatePath("/members/[slug]", "page");
+  return NextResponse.json({ ok: true, library: content }, { headers: { "Cache-Control": "no-store" } });
 }
