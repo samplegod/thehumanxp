@@ -289,11 +289,6 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
     };
   }, [draw]);
 
-  useEffect(() => {
-    const mobile = window.matchMedia("(max-width: 640px)");
-    if (mobile.matches) setMobileView("list");
-  }, []);
-
   const nodeAt = (clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
@@ -389,6 +384,10 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
 
   const selectedEpisode = selected === null ? null : nodes[selected];
   const hoveredEpisode = hovered === null ? null : nodes[hovered];
+  const openMobileView = (view: "map" | "list") => {
+    setMobileView(view);
+    window.requestAnimationFrame(() => document.querySelector(".universe-stage")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }));
+  };
 
   return (
     <main className="universe-shell">
@@ -407,6 +406,11 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
           <Link href="/" className="universe-back"><ArrowLeft size={15} /> Back to archive</Link>
         </div>
       </header>
+
+      <div className="universe-mobile-floating" aria-label="Open Knowledge Universe view">
+        <button className={mobileView === "list" ? "is-active" : ""} onClick={() => openMobileView("list")} aria-pressed={mobileView === "list"}><List size={16} /> Episodes</button>
+        <button className={mobileView === "map" ? "is-active" : ""} onClick={() => openMobileView("map")} aria-pressed={mobileView === "map"}><Sparkles size={16} /> Open map</button>
+      </div>
 
       <section className={`universe-stage ${mobileView === "list" ? "is-mobile-list" : ""}`} aria-label="Interactive episode knowledge graph">
         <canvas
@@ -480,11 +484,6 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
           <button onClick={reset} aria-label="Center and reset universe"><LocateFixed size={16} /></button>
         </div>
 
-        <div className="universe-mobile-switch" aria-label="Choose Knowledge Universe view">
-          <button className={mobileView === "list" ? "is-active" : ""} onClick={() => setMobileView("list")}><List size={15} /> List</button>
-          <button className={mobileView === "map" ? "is-active" : ""} onClick={() => setMobileView("map")}><Sparkles size={15} /> Map</button>
-        </div>
-
         {mobileView === "list" && (
           <div className="universe-mobile-results">
             <label className="universe-search">
@@ -495,7 +494,7 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
             <p>{filteredIndexes.size} results</p>
             <div>
               {nodes.map((episode, index) => filteredIndexes.has(index) && (
-                <button key={episode.number} onClick={() => { setMobileView("map"); selectEpisode(index); }}>
+                <button key={episode.number} onClick={() => { openMobileView("map"); selectEpisode(index); }}>
                   <span>EP {episode.number}</span>
                   <strong>{episode.guest}</strong>
                   <small>{episode.topics.join(" · ")}</small>
