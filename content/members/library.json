@@ -61,44 +61,9 @@
       ]
     },
     {
-      "slug": "behind-scenes-building-episode-192",
-      "category": "behind-the-scenes",
-      "title": "Building Episode 192",
-      "eyebrow": "Behind the Scenes · Production Log",
-      "description": "From the first research question to the final mix: a quiet look inside how one HXP conversation is made.",
-      "date": "2026-06-28",
-      "duration": "8 min read",
-      "format": "Photo journal",
-      "available": true,
-      "topics": [
-        "Process",
-        "Studio",
-        "Research"
-      ],
-      "body": [
-        "A conversation begins long before record. This production log traces the research board, question architecture, studio choices, and editorial passes behind episode 192.",
-        "It also preserves what usually disappears: abandoned directions, difficult cuts, and the small decisions that protect the humanity of a long-form exchange."
-      ]
-    },
-    {
-      "slug": "bonus-episode-1",
-      "category": "bonus-episodes",
-      "title": "Bonus episode test",
-      "eyebrow": "Bonus Episode",
-      "description": "Add a short description.",
-      "date": "2026-08-03",
-      "duration": "",
-      "format": "Private audio",
-      "available": false,
-      "topics": [],
-      "body": [
-        "Add the release body here."
-      ]
-    },
-    {
       "slug": "new-release-1785783831262",
       "category": "bonus-episodes",
-      "title": "Untitled release",
+      "title": "bonus episode #1",
       "eyebrow": "Bonus Episode",
       "description": "Add a short description.",
       "date": "2026-08-03",
@@ -114,37 +79,6 @@
       "slug": "new-release-1785784106162",
       "category": "bonus-episodes",
       "title": "Untitled release",
-      "eyebrow": "Bonus Episode",
-      "description": "Add a short description.",
-      "date": "2026-08-03",
-      "duration": "",
-      "format": "Private audio",
-      "available": false,
-      "topics": [],
-      "body": [
-        "Add the release body here."
-      ]
-    },
-    {
-      "slug": "new-release-1785784120856",
-      "category": "bonus-episodes",
-      "title": "test",
-      "eyebrow": "test",
-      "description": "Add a short description.",
-      "date": "2026-08-03",
-      "duration": "333",
-      "format": "private",
-      "available": false,
-      "href": "https://www.jew.com",
-      "topics": [],
-      "body": [
-        "Add the release body here."
-      ]
-    },
-    {
-      "slug": "bonus-episode",
-      "category": "bonus-episodes",
-      "title": "bonus episode",
       "eyebrow": "Bonus Episode",
       "description": "Add a short description.",
       "date": "2026-08-03",
