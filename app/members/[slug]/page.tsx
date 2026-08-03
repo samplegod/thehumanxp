@@ -11,7 +11,7 @@ import "../members.css";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const item = getMemberItem((await params).slug);
+  const item = await getMemberItem((await params).slug);
   return { title: item ? `${item.title} | HXP Members` : "Private Release | HXP Members", robots: { index: false, follow: false } };
 }
 
@@ -20,7 +20,7 @@ export default async function MemberReleasePage({ params }: { params: Promise<{ 
   if (!access?.email) redirect("/members/access");
   if (!access.active) redirect("/members");
 
-  const item = getMemberItem((await params).slug);
+  const item = await getMemberItem((await params).slug);
   if (!item) notFound();
 
   return <main className="member-entry">

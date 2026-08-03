@@ -13,8 +13,15 @@
       "format": "Private audio",
       "featured": true,
       "available": true,
-      "topics": ["Consciousness", "Inquiry", "Mysticism"],
-      "body": ["The microphones were off, but the central question was still in the room: what changes when consciousness is treated as primary rather than produced?", "This private coda follows that question without the pressure of a formal episode. Mark and Xavier revisit certainty, intellectual humility, and the difference between a compelling map and lived knowledge."]
+      "topics": [
+        "Consciousness",
+        "Inquiry",
+        "Mysticism"
+      ],
+      "body": [
+        "The microphones were off, but the central question was still in the room: what changes when consciousness is treated as primary rather than produced?",
+        "This private coda follows that question without the pressure of a formal episode. Mark and Xavier revisit certainty, intellectual humility, and the difference between a compelling map and lived knowledge."
+      ]
     },
     {
       "slug": "bonus-the-dreaming-mind",
@@ -26,8 +33,15 @@
       "duration": "58 min",
       "format": "Audio essay",
       "available": true,
-      "topics": ["Dreams", "Memory", "Mind"],
-      "body": ["Dreams have always lived at the edge of the archive. This audio essay gathers threads from neuroscience, depth psychology, and first-person experience.", "Listen as a field note, not a conclusion: an invitation to notice what the mind may be doing when waking attention releases its grip."]
+      "topics": [
+        "Dreams",
+        "Memory",
+        "Mind"
+      ],
+      "body": [
+        "Dreams have always lived at the edge of the archive. This audio essay gathers threads from neuroscience, depth psychology, and first-person experience.",
+        "Listen as a field note, not a conclusion: an invitation to notice what the mind may be doing when waking attention releases its grip."
+      ]
     },
     {
       "slug": "research-consciousness-reading-room",
@@ -38,8 +52,15 @@
       "date": "2026-07-18",
       "format": "12-page dossier",
       "available": true,
-      "topics": ["Science", "Philosophy", "Consciousness"],
-      "body": ["A working bibliography for listeners who want to move beyond the headline version of the hard problem.", "Inside: foundational arguments, recent counterpositions, questions used during episode preparation, and the passages that complicated our assumptions most."]
+      "topics": [
+        "Science",
+        "Philosophy",
+        "Consciousness"
+      ],
+      "body": [
+        "A working bibliography for listeners who want to move beyond the headline version of the hard problem.",
+        "Inside: foundational arguments, recent counterpositions, questions used during episode preparation, and the passages that complicated our assumptions most."
+      ]
     },
     {
       "slug": "transcript-192-annotated",
@@ -50,8 +71,15 @@
       "date": "2026-07-12",
       "format": "Web + PDF",
       "available": true,
-      "topics": ["Mysticism", "Spirituality", "Potential"],
-      "body": ["A reading edition of episode 192, edited for clarity while preserving the rhythm and intent of the original exchange.", "References and chapter markers are gathered alongside the conversation so names, studies, and recurring ideas can be followed without leaving the thread."]
+      "topics": [
+        "Mysticism",
+        "Spirituality",
+        "Potential"
+      ],
+      "body": [
+        "A reading edition of episode 192, edited for clarity while preserving the rhythm and intent of the original exchange.",
+        "References and chapter markers are gathered alongside the conversation so names, studies, and recurring ideas can be followed without leaving the thread."
+      ]
     },
     {
       "slug": "download-solitude-field-guide",
@@ -62,8 +90,15 @@
       "date": "2026-07-05",
       "format": "Designed PDF",
       "available": true,
-      "topics": ["Practice", "Reflection", "Listening"],
-      "body": ["Solitude can be an absence, or it can be an instrument. This field guide offers a simple structure for turning quiet into attentive inquiry.", "Use the prompts before a long walk, after an episode, or with a trusted friend. The aim is not productivity. It is contact."]
+      "topics": [
+        "Practice",
+        "Reflection",
+        "Listening"
+      ],
+      "body": [
+        "Solitude can be an absence, or it can be an instrument. This field guide offers a simple structure for turning quiet into attentive inquiry.",
+        "Use the prompts before a long walk, after an episode, or with a trusted friend. The aim is not productivity. It is contact."
+      ]
     },
     {
       "slug": "early-access-human-meaning",
@@ -75,8 +110,15 @@
       "duration": "1 hr 42 min",
       "format": "Advance audio",
       "available": false,
-      "topics": ["Meaning", "Culture", "Psychology"],
-      "body": ["This advance release is still in the final mix. Members will see the full listening link here before the episode enters the public feed.", "The conversation explores how meaning is inherited, dismantled, and deliberately rebuilt in periods of cultural uncertainty."]
+      "topics": [
+        "Meaning",
+        "Culture",
+        "Psychology"
+      ],
+      "body": [
+        "This advance release is still in the final mix. Members will see the full listening link here before the episode enters the public feed.",
+        "The conversation explores how meaning is inherited, dismantled, and deliberately rebuilt in periods of cultural uncertainty."
+      ]
     },
     {
       "slug": "behind-scenes-building-episode-192",
@@ -88,8 +130,30 @@
       "duration": "8 min read",
       "format": "Photo journal",
       "available": true,
-      "topics": ["Process", "Studio", "Research"],
-      "body": ["A conversation begins long before record. This production log traces the research board, question architecture, studio choices, and editorial passes behind episode 192.", "It also preserves what usually disappears: abandoned directions, difficult cuts, and the small decisions that protect the humanity of a long-form exchange."]
+      "topics": [
+        "Process",
+        "Studio",
+        "Research"
+      ],
+      "body": [
+        "A conversation begins long before record. This production log traces the research board, question architecture, studio choices, and editorial passes behind episode 192.",
+        "It also preserves what usually disappears: abandoned directions, difficult cuts, and the small decisions that protect the humanity of a long-form exchange."
+      ]
+    },
+    {
+      "slug": "bonus-episode-1",
+      "category": "bonus-episodes",
+      "title": "Bonus episode #1",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": false,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
     }
   ]
 }

@@ -58,7 +58,7 @@ export default async function MembersPage() {
   if (!access.email) redirect("/members/access");
   if (!access.active) return <MembershipRequired />;
 
-  const library = getMemberLibrary();
+  const library = await getMemberLibrary();
   const featured = library.items.find((item) => item.category === "bonus-episodes") ?? library.items.find((item) => item.featured) ?? library.items[0];
   const sections = getMemberSections(library.items);
 

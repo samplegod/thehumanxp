@@ -1,6 +1,7 @@
 import "server-only";
 
-import library from "@/content/members/library.json";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 export const memberCategories = [
   "after-hours",
@@ -36,8 +37,11 @@ export type MemberLibrary = {
   items: MemberItem[];
 };
 
-export function getMemberLibrary(): MemberLibrary {
-  return library as MemberLibrary;
+export async function getMemberLibrary(): Promise<MemberLibrary> {
+  // Read from disk instead of statically importing JSON. Content Studio writes
+  // this file at runtime in development, and a module import would stay cached.
+  const filePath = path.join(process.cwd(), "content", "members", "library.json");
+  return JSON.parse(await readFile(filePath, "utf8")) as MemberLibrary;
 }
 
 export function getMemberSections(items: MemberItem[]) {
@@ -47,6 +51,6 @@ export function getMemberSections(items: MemberItem[]) {
   }));
 }
 
-export function getMemberItem(slug: string) {
-  return getMemberLibrary().items.find((item) => item.slug === slug);
+export async function getMemberItem(slug: string) {
+  return (await getMemberLibrary()).items.find((item) => item.slug === slug);
 }
