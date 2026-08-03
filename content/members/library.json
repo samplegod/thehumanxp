@@ -104,6 +104,21 @@
       "body": [
         "Add the release body here."
       ]
+    },
+    {
+      "slug": "new-release-1785786534472",
+      "category": "bonus-episodes",
+      "title": "the news is fake",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": true,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
     }
   ]
 }
