@@ -16,7 +16,8 @@ export default function CommunityLogin() {
     const response = await fetch("/api/community/auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: mode, ...data }) });
     const result = await response.json();
     if (!response.ok) { setError(result.error); setBusy(false); return; }
-    window.location.href = "/community";
+    const destination = new URLSearchParams(window.location.search).get("next");
+    window.location.href = destination?.startsWith("/") && !destination.startsWith("//") ? destination : "/community";
   }
   return <main className="community-auth"><div className="community-auth-glow" /><Link href="/" className="community-back"><ArrowLeft /> Back to HXP</Link><section>
     <p className="conversion-kicker"><Sparkles /> The listening room</p><h1>{mode === "login" ? "Return to the conversation." : "Enter the community."}</h1>
