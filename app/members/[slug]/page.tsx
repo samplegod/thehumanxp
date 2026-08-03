@@ -3,9 +3,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, LockKeyhole } from "lucide-react";
 
-import { getMemberEmail } from "@/lib/member-auth";
+import { getMemberAccess } from "@/lib/member-access";
 import { getMemberItem } from "@/lib/member-content";
-import { getStripeMembership } from "@/lib/stripe-membership";
 
 import "../members.css";
 
@@ -17,10 +16,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function MemberReleasePage({ params }: { params: Promise<{ slug: string }> }) {
-  const email = await getMemberEmail();
-  if (!email) redirect("/members/access");
-  const membership = await getStripeMembership(email).catch(() => null);
-  if (!membership?.active) redirect("/members");
+  const access = await getMemberAccess().catch(() => null);
+  if (!access?.email) redirect("/members/access");
+  if (!access.active) redirect("/members");
 
   const item = getMemberItem((await params).slug);
   if (!item) notFound();

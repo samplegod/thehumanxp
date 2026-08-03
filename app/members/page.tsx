@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
@@ -14,9 +15,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { getMemberEmail } from "@/lib/member-auth";
+import { getMemberAccess } from "@/lib/member-access";
 import { getMemberLibrary, getMemberSections, type MemberCategory, type MemberItem } from "@/lib/member-content";
-import { getStripeMembership } from "@/lib/stripe-membership";
 
 import "./members.css";
 
@@ -48,21 +48,18 @@ const icons: Record<MemberCategory, typeof Headphones> = {
 };
 
 export default async function MembersPage() {
-  const email = await getMemberEmail();
-  if (!email) redirect("/members/access");
-
-  let membership;
+  let access;
   try {
-    membership = await getStripeMembership(email);
+    access = await getMemberAccess();
   } catch (error) {
     console.error("Members access verification failed", error);
     return <AccessUnavailable />;
   }
-
-  if (!membership.active) return <MembershipRequired />;
+  if (!access.email) redirect("/members/access");
+  if (!access.active) return <MembershipRequired />;
 
   const library = getMemberLibrary();
-  const featured = library.items.find((item) => item.featured) ?? library.items[0];
+  const featured = library.items.find((item) => item.category === "bonus-episodes") ?? library.items.find((item) => item.featured) ?? library.items[0];
   const sections = getMemberSections(library.items);
 
   return (
@@ -71,19 +68,19 @@ export default async function MembersPage() {
       <header className="members-header">
         <Link href="/" className="members-back"><ArrowLeft /> HXP</Link>
         <Link href="/members" className="members-mark"><span>HXP</span><b>The Private Archive<small>Members library</small></b></Link>
-        <div className="members-identity"><span className="members-live" /> Active member <b>{email}</b></div>
+        <div className="members-identity"><span className="members-live" /> {access.source === "development-override" ? "Development access" : "Active member"} <b>{access.email}</b></div>
       </header>
 
       <section className="members-hero">
         <div>
-          <p className="members-kicker"><LockKeyhole /> The members room · {library.edition}</p>
-          <h1>Go beyond<br /><em>the episode.</em></h1>
-          <p>A private library for the questions that keep unfolding—unreleased conversations, working notes, annotated transcripts, and artifacts from inside HXP.</p>
+          <p className="members-kicker"><LockKeyhole /> Welcome to the members room · {library.edition}</p>
+          <h1>Welcome back.<br /><em>Stay with the question.</em></h1>
+          <p>This is the quiet side of HXP—a living library of bonus episodes, after-hours exchanges, research notes, early listening, and artifacts made for deeper attention.</p>
         </div>
         <aside>
-          <span>Library index</span>
+          <span>Your library</span>
           <strong>{String(library.items.length).padStart(2, "0")}</strong>
-          <p>private releases across seven evolving collections</p>
+          <p>private releases waiting inside seven evolving collections</p>
           <small>Updated {formatDate(library.updatedAt)}</small>
         </aside>
       </section>
@@ -109,6 +106,7 @@ export default async function MembersPage() {
               </header>
               <div className="members-shelf-grid">
                 {items.map((item) => <MemberCard item={item} key={item.slug} />)}
+                {items.length < 2 && <EmptyShelf category={category} />}
               </div>
             </section>
           );
@@ -127,16 +125,26 @@ export default async function MembersPage() {
 function FeaturedItem({ item }: { item: MemberItem }) {
   return <section className="members-featured">
     <div className="members-orbit" aria-hidden="true"><i /><i /><i /></div>
-    <div><p className="members-kicker"><Radio /> Latest private transmission</p><h2>{item.title}</h2><p>{item.description}</p><div className="member-tags">{item.topics.map((topic) => <span key={topic}>{topic}</span>)}</div></div>
-    <aside><span>{item.format}</span><strong>{item.duration}</strong><small>{formatDate(item.date)}</small><Link href={item.href ?? `/members/${item.slug}`}>Open release <ArrowRight /></Link></aside>
+    <div><p className="members-kicker"><Radio /> Latest bonus episode</p><h2>{item.title}</h2><p>{item.description}</p><div className="member-tags">{item.topics.map((topic) => <span key={topic}>{topic}</span>)}</div><Link className="members-featured-cta" href={item.href ?? `/members/${item.slug}`}>Listen to the private release <ArrowRight /></Link></div>
+    <aside className="members-featured-cover"><Image src={artFor(item.category)} alt="" fill priority sizes="(max-width: 720px) 90vw, 32vw" /><div><span>{item.format}</span><strong>{item.duration}</strong><small>{formatDate(item.date)}</small></div></aside>
   </section>;
 }
 
 function MemberCard({ item }: { item: MemberItem }) {
   return <article className="member-release">
-    <div className="member-release-art"><span>{item.eyebrow}</span><i /><b>{item.available === false ? "Arriving soon" : item.format}</b></div>
+    <div className="member-release-art"><Image src={artFor(item.category)} alt="" fill sizes="(max-width: 720px) 92vw, 34vw" /><span>{item.eyebrow}</span><i /><b>{item.available === false ? "Arriving soon" : item.format}</b></div>
     <div className="member-release-copy"><p>{formatDate(item.date)} {item.duration && <>· {item.duration}</>}</p><h3>{item.title}</h3><p>{item.description}</p><div className="member-tags">{item.topics.map((topic) => <span key={topic}>{topic}</span>)}</div>{item.available === false ? <span className="member-release-status">Scheduled release</span> : <Link href={item.href ?? `/members/${item.slug}`}>Open release <ArrowRight /></Link>}</div>
   </article>;
+}
+
+function EmptyShelf({ category }: { category: MemberCategory }) {
+  return <article className="member-shelf-empty"><Sparkles /><span>More from {categoryMeta[category].label}</span><p>The next release is being prepared. New work will appear here without changing your access.</p></article>;
+}
+
+function artFor(category: MemberCategory) {
+  if (["research-notes", "transcripts", "downloads"].includes(category)) return "/members/research-desk.png";
+  if (category === "early-access") return "/members/threshold.png";
+  return "/members/signal-room.png";
 }
 
 function MembershipRequired() {
