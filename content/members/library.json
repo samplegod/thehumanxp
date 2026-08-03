@@ -3,25 +3,6 @@
   "edition": "Field Notes · Volume I",
   "items": [
     {
-      "slug": "research-consciousness-reading-room",
-      "category": "research-notes",
-      "title": "A Reading Room for the Hard Problem",
-      "eyebrow": "Research Notes · Dossier 07",
-      "description": "The papers, books, marginalia, and unresolved tensions behind our recent consciousness conversations.",
-      "date": "2026-07-18",
-      "format": "12-page dossier",
-      "available": true,
-      "topics": [
-        "Science",
-        "Philosophy",
-        "Consciousness"
-      ],
-      "body": [
-        "A working bibliography for listeners who want to move beyond the headline version of the hard problem.",
-        "Inside: foundational arguments, recent counterpositions, questions used during episode preparation, and the passages that complicated our assumptions most."
-      ]
-    },
-    {
       "slug": "transcript-192-annotated",
       "category": "transcripts",
       "title": "Episode 192 — Annotated Transcript",
@@ -164,6 +145,21 @@
       "slug": "bonus-episode",
       "category": "bonus-episodes",
       "title": "bonus episode",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": false,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
+    },
+    {
+      "slug": "new-release-1785785326635",
+      "category": "bonus-episodes",
+      "title": "Untitled release",
       "eyebrow": "Bonus Episode",
       "description": "Add a short description.",
       "date": "2026-08-03",
