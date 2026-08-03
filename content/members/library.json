@@ -3,47 +3,6 @@
   "edition": "Field Notes · Volume I",
   "items": [
     {
-      "slug": "after-hours-mark-gober",
-      "category": "after-hours",
-      "title": "After the Record Light Went Dark",
-      "eyebrow": "After Hours · Mark Gober",
-      "description": "An unhurried coda on consciousness, certainty, and the questions that remained after episode 192.",
-      "date": "2026-08-01",
-      "duration": "24 min",
-      "format": "Private audio",
-      "featured": true,
-      "available": true,
-      "topics": [
-        "Consciousness",
-        "Inquiry",
-        "Mysticism"
-      ],
-      "body": [
-        "The microphones were off, but the central question was still in the room: what changes when consciousness is treated as primary rather than produced?",
-        "This private coda follows that question without the pressure of a formal episode. Mark and Xavier revisit certainty, intellectual humility, and the difference between a compelling map and lived knowledge."
-      ]
-    },
-    {
-      "slug": "bonus-the-dreaming-mind",
-      "category": "bonus-episodes",
-      "title": "The Dreaming Mind Is Still Listening",
-      "eyebrow": "Bonus Episode · 01",
-      "description": "A members-only conversation on dream states, memory, and the intelligence beneath waking attention.",
-      "date": "2026-07-24",
-      "duration": "58 min",
-      "format": "Audio essay",
-      "available": true,
-      "topics": [
-        "Dreams",
-        "Memory",
-        "Mind"
-      ],
-      "body": [
-        "Dreams have always lived at the edge of the archive. This audio essay gathers threads from neuroscience, depth psychology, and first-person experience.",
-        "Listen as a field note, not a conclusion: an invitation to notice what the mind may be doing when waking attention releases its grip."
-      ]
-    },
-    {
       "slug": "research-consciousness-reading-room",
       "category": "research-notes",
       "title": "A Reading Room for the Hard Problem",
@@ -143,7 +102,68 @@
     {
       "slug": "bonus-episode-1",
       "category": "bonus-episodes",
-      "title": "Bonus episode #1",
+      "title": "Bonus episode test",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": false,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
+    },
+    {
+      "slug": "new-release-1785783831262",
+      "category": "bonus-episodes",
+      "title": "Untitled release",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": false,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
+    },
+    {
+      "slug": "new-release-1785784106162",
+      "category": "bonus-episodes",
+      "title": "Untitled release",
+      "eyebrow": "Bonus Episode",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "",
+      "format": "Private audio",
+      "available": false,
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
+    },
+    {
+      "slug": "new-release-1785784120856",
+      "category": "bonus-episodes",
+      "title": "test",
+      "eyebrow": "test",
+      "description": "Add a short description.",
+      "date": "2026-08-03",
+      "duration": "333",
+      "format": "private",
+      "available": false,
+      "href": "https://www.jew.com",
+      "topics": [],
+      "body": [
+        "Add the release body here."
+      ]
+    },
+    {
+      "slug": "bonus-episode",
+      "category": "bonus-episodes",
+      "title": "bonus episode",
       "eyebrow": "Bonus Episode",
       "description": "Add a short description.",
       "date": "2026-08-03",
