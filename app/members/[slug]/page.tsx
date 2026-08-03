@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, LockKeyhole } from "lucide-react";
 
-import { getCurrentUser } from "@/lib/auth";
+import { getMemberEmail } from "@/lib/member-auth";
 import { getMemberItem } from "@/lib/member-content";
 import { getStripeMembership } from "@/lib/stripe-membership";
 
@@ -17,9 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function MemberReleasePage({ params }: { params: Promise<{ slug: string }> }) {
-  const user = await getCurrentUser();
-  if (!user) redirect(`/community/login?next=/members/${encodeURIComponent((await params).slug)}`);
-  const membership = await getStripeMembership(user.email).catch(() => null);
+  const email = await getMemberEmail();
+  if (!email) redirect("/members/access");
+  const membership = await getStripeMembership(email).catch(() => null);
   if (!membership?.active) redirect("/members");
 
   const item = getMemberItem((await params).slug);

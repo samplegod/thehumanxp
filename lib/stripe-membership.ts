@@ -28,6 +28,7 @@ async function stripeRequest<T>(path: string, params: URLSearchParams): Promise<
   const response = await fetch(`https://api.stripe.com/v1/${path}?${params}`, {
     headers: { Authorization: `Bearer ${secret}` },
     cache: "no-store",
+    signal: AbortSignal.timeout(8_000),
   });
 
   if (!response.ok) {
@@ -41,7 +42,7 @@ async function stripeRequest<T>(path: string, params: URLSearchParams): Promise<
 export async function getStripeMembership(email: string): Promise<StripeMembership> {
   const customers = await stripeRequest<StripeCustomerList>(
     "customers",
-    new URLSearchParams({ email: email.toLowerCase(), limit: "100" }),
+    new URLSearchParams({ email: email.toLowerCase(), limit: "10" }),
   );
 
   const subscriptionLists = await Promise.all(

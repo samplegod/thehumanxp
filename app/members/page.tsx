@@ -14,7 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { getCurrentUser } from "@/lib/auth";
+import { getMemberEmail } from "@/lib/member-auth";
 import { getMemberLibrary, getMemberSections, type MemberCategory, type MemberItem } from "@/lib/member-content";
 import { getStripeMembership } from "@/lib/stripe-membership";
 
@@ -48,18 +48,18 @@ const icons: Record<MemberCategory, typeof Headphones> = {
 };
 
 export default async function MembersPage() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/community/login?next=/members");
+  const email = await getMemberEmail();
+  if (!email) redirect("/members/access");
 
   let membership;
   try {
-    membership = await getStripeMembership(user.email);
+    membership = await getStripeMembership(email);
   } catch (error) {
     console.error("Members access verification failed", error);
     return <AccessUnavailable />;
   }
 
-  if (!membership.active) return <MembershipRequired name={user.name} />;
+  if (!membership.active) return <MembershipRequired />;
 
   const library = getMemberLibrary();
   const featured = library.items.find((item) => item.featured) ?? library.items[0];
@@ -71,7 +71,7 @@ export default async function MembersPage() {
       <header className="members-header">
         <Link href="/" className="members-back"><ArrowLeft /> HXP</Link>
         <Link href="/members" className="members-mark"><span>HXP</span><b>The Private Archive<small>Members library</small></b></Link>
-        <div className="members-identity"><span className="members-live" /> Active member <b>{user.name}</b></div>
+        <div className="members-identity"><span className="members-live" /> Active member <b>{email}</b></div>
       </header>
 
       <section className="members-hero">
@@ -139,8 +139,8 @@ function MemberCard({ item }: { item: MemberItem }) {
   </article>;
 }
 
-function MembershipRequired({ name }: { name: string }) {
-  return <main className="members-gate"><div className="members-gate-glow" /><Link href="/"><ArrowLeft /> Back to HXP</Link><section><LockKeyhole /><p className="members-kicker">The private archive</p><h1>The door opens<br />for active members.</h1><p>Welcome, {name}. This account is signed in, but we could not find an active or trialing Stripe subscription for its email address.</p><Link className="members-gate-button" href="/membership">Choose a membership <ArrowRight /></Link><small>Already subscribed with another email? Sign in using the email attached to Stripe.</small></section></main>;
+function MembershipRequired() {
+  return <main className="members-gate"><div className="members-gate-glow" /><Link href="/"><ArrowLeft /> Back to HXP</Link><section><LockKeyhole /><p className="members-kicker">The private archive</p><h1>The door opens<br />for active members.</h1><p>This access link is valid, but its Stripe subscription is no longer active or trialing.</p><Link className="members-gate-button" href="/membership">Choose a membership <ArrowRight /></Link><small>Already active under another email? Request a new access link.</small></section></main>;
 }
 
 function AccessUnavailable() {

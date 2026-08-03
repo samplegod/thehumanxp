@@ -1,5 +1,4 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -53,19 +52,17 @@ export async function GET(request: NextRequest) {
   }
 
   const baseUrl = getBaseUrl(request);
-  const user = await getCurrentUser();
   const params = new URLSearchParams({
     mode: selectedPlan.mode,
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
-    success_url: `${baseUrl}/members?checkout=success`,
+    success_url: `${baseUrl}/api/members/checkout?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/membership?checkout=cancelled#pricing`,
     "metadata[plan]": plan,
     "subscription_data[metadata][plan]": plan,
     allow_promotion_codes: "true",
   });
 
-  if (user?.email) params.set("customer_email", user.email);
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
