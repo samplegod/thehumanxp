@@ -2,8 +2,11 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink, Play, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EpisodePlayButton } from "@/components/player/episode-player";
+import { episodes, type Episode } from "@/lib/episodes";
+import { cn } from "@/lib/utils";
 
 const topEpisodes = [
   {
@@ -139,8 +142,28 @@ function getThumbnail(videoId?: string) {
     : "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80";
 }
 
+function normalizeGuest(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\b(?:dr|md)\b/gi, "")
+    .replace(/[^a-z0-9]+/gi, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function findPlayableEpisode(guest: string): Episode | null {
+  const target = normalizeGuest(guest);
+  return episodes.find((episode) => {
+    if (!episode.audio) return false;
+    const candidate = normalizeGuest(episode.guest);
+    return candidate === target || candidate.includes(target) || target.includes(candidate);
+  }) ?? null;
+}
+
 export default function TopEpisodesPage() {
   const featured = topEpisodes[0];
+  const featuredAudio = findPlayableEpisode(featured.guest);
 
   return (
     <main className="relative min-h-screen overflow-hidden">
@@ -172,12 +195,12 @@ export default function TopEpisodesPage() {
                 mystery, reality, and human potential.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" asChild>
-                  <a href={featured.href} target="_blank" rel="noreferrer">
+                {featuredAudio && (
+                  <EpisodePlayButton episode={featuredAudio} className={buttonVariants({ size: "lg" })}>
                     Start with Rob Bell
                     <Play className="size-4" />
-                  </a>
-                </Button>
+                  </EpisodePlayButton>
+                )}
                 <Button size="lg" variant="secondary" asChild>
                   <a href="#episodes">
                     Browse all 14
@@ -210,11 +233,13 @@ export default function TopEpisodesPage() {
 
       <section id="episodes" className="container py-20">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {topEpisodes.map((episode, index) => (
-            <Card
-              key={episode.href}
-              className="group overflow-hidden bg-white/[0.055] transition duration-300 hover:border-primary/30 hover:bg-white/[0.075] hover:shadow-glow"
-            >
+          {topEpisodes.map((episode, index) => {
+            const playableEpisode = findPlayableEpisode(episode.guest);
+            return (
+              <Card
+                key={episode.href}
+                className="group overflow-hidden bg-white/[0.055] transition duration-300 hover:border-primary/30 hover:bg-white/[0.075] hover:shadow-glow"
+              >
               <div className="relative aspect-video overflow-hidden bg-black/30">
                 <img
                   src={getThumbnail(episode.videoId)}
@@ -249,15 +274,25 @@ export default function TopEpisodesPage() {
                     </span>
                   ))}
                 </div>
-                <Button className="mt-6 w-full" variant="secondary" asChild>
+                {playableEpisode && (
+                  <EpisodePlayButton
+                    episode={playableEpisode}
+                    className={cn(buttonVariants(), "mt-6 w-full")}
+                  >
+                    Listen in the HXP player
+                    <Play className="size-4" />
+                  </EpisodePlayButton>
+                )}
+                <Button className={playableEpisode ? "mt-3 w-full" : "mt-6 w-full"} variant="secondary" asChild>
                   <a href={episode.href} target="_blank" rel="noreferrer">
                     Watch episode
                     <ExternalLink className="size-4" />
                   </a>
                 </Button>
               </CardContent>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       </section>
     </main>

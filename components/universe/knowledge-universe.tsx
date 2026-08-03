@@ -19,6 +19,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Episode } from "@/lib/episodes";
 import { FavoriteButton } from "@/components/conversion/conversion-ui";
+import { EpisodePlayButton } from "@/components/player/episode-player";
 import { track } from "@/lib/analytics";
 
 type GraphNode = Episode & { x: number; y: number; radius: number; color: string };
@@ -553,9 +554,15 @@ export function KnowledgeUniverse({ episodes }: { episodes: Episode[] }) {
                     </button>
                   ))}
                 </div>
-                <a href={selectedEpisode.audio || selectedEpisode.url || "#"} target="_blank" rel="noreferrer" className="universe-listen">
-                  Listen to episode <ArrowUpRight size={16} />
-                </a>
+                {selectedEpisode.audio ? (
+                  <EpisodePlayButton episode={selectedEpisode} className="universe-listen">
+                    Listen in the HXP player <AudioLines size={16} />
+                  </EpisodePlayButton>
+                ) : (
+                  <a href={selectedEpisode.url || "#"} target="_blank" rel="noreferrer" className="universe-listen">
+                    Open episode archive <ArrowUpRight size={16} />
+                  </a>
+                )}
                 {explorationCount >= 1 && (
                   <div className="universe-membership-invite">
                     <small>Go beyond the map</small>
