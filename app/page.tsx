@@ -21,39 +21,42 @@ import {
   NewsletterForm,
   TrackedLink,
 } from "@/components/conversion/conversion-ui";
+import {
+  EpisodePlayButton,
+} from "@/components/player/episode-player";
 import { episodes } from "@/lib/episodes";
 
 const featured = episodes[0];
 const trustedGuests = [
-  { name: "Wim Hof", href: "https://www.youtube.com/watch?v=GJPdd2nJP8k" },
-  { name: "Graham Hancock", href: "https://www.youtube.com/watch?v=1mcl_v3H4sA" },
-  { name: "James Clear", href: "https://www.youtube.com/watch?v=SJLw02QjoQQ" },
-  { name: "Rupert Sheldrake", href: "https://www.youtube.com/watch?v=H9gxrkQXRGU" },
-  { name: "Mark Manson", href: "https://www.youtube.com/watch?v=nqbxGhoe_jo" },
-  { name: "Dr. Bruce Lipton", href: "https://www.youtube.com/watch?v=r-xfE1mEwk4" },
+  { name: "Wim Hof", note: "Resilience & the nervous system", href: "https://www.youtube.com/watch?v=GJPdd2nJP8k" },
+  { name: "Graham Hancock", note: "Lost history & ancient worlds", href: "https://www.youtube.com/watch?v=1mcl_v3H4sA" },
+  { name: "James Clear", note: "Habits & human potential", href: "https://www.youtube.com/watch?v=SJLw02QjoQQ" },
+  { name: "Rupert Sheldrake", note: "Biology beyond convention", href: "https://www.youtube.com/watch?v=H9gxrkQXRGU" },
+  { name: "Mark Manson", note: "Meaning in modern life", href: "https://www.youtube.com/watch?v=nqbxGhoe_jo" },
+  { name: "Dr. Bruce Lipton", note: "Belief, biology & perception", href: "https://www.youtube.com/watch?v=r-xfE1mEwk4" },
 ];
 const threads = [
   {
     name: "Consciousness",
-    copy: "What is the mind—and where does it end?",
+    copy: "Mind, awareness, near-death experience, and the nature of reality.",
     color: "#f0d69f",
     episodes: [192, 191, 172],
   },
   {
     name: "Human Potential",
-    copy: "How much of our capacity remains untrained?",
+    copy: "Habit, resilience, creativity, and the edges of what we can become.",
     color: "#dca4ff",
     episodes: [181, 180, 177],
   },
   {
     name: "Science",
-    copy: "Where evidence meets the edge of the known.",
+    copy: "Physics, biology, cosmology, and evidence at the edge of the known.",
     color: "#83d8ee",
     episodes: [174, 176, 184],
   },
   {
     name: "Ancient Worlds",
-    copy: "Memory, origins, and civilizations beneath history.",
+    copy: "Origins, archaeology, myth, and civilizations beneath recorded history.",
     color: "#eda978",
     episodes: [185, 179, 188],
   },
@@ -77,9 +80,9 @@ export default function Home() {
       <Radiance />
       <Header />
       <Hero />
+      <FeaturedTransmission />
       <TrustBand />
       <Purpose />
-      <Featured />
       <KnowledgePortal />
       <EpisodeGrid />
       <MembershipInvitation />
@@ -103,7 +106,7 @@ function Header() {
         <Link href="/membership" onClick={() => setOpen(false)}>Membership</Link>
       </nav>
       <div className="conversion-header-actions">
-        <Link href="/membership" className="header-membership">Enter the membership <ArrowRight className="size-3.5" /></Link>
+        <Link href="/universe" className="header-membership">Explore the archive <ArrowRight className="size-3.5" /></Link>
         <button className="mobile-menu" onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}>{open ? <X /> : <Menu />}</button>
       </div>
     </header>
@@ -113,22 +116,31 @@ function Header() {
 function Hero() {
   return (
     <section className="conversion-hero">
+      <div className="hero-poster-image" aria-hidden="true">{featured.image && <img src={featured.image} alt="" />}<i /></div>
+      <div className="hero-film" aria-hidden="true"><span>HXP</span><span>192 conversations</span><span>Est. 2013</span></div>
       <div className="hero-orbit" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9 }} className="hero-copy">
-        <p className="conversion-kicker"><span /> Long-form inquiry for the deeply curious</p>
-        <h1>Go beyond the episode.<br /><em>Enter the inquiry.</em></h1>
-        <p className="hero-lede">Independent conversations with scientists, mystics, authors, and cultural outliers—mapped into a living archive for people who refuse shallow answers.</p>
+        <p className="conversion-kicker"><span /> The Human Experience Podcast</p>
+        <h1>Follow the question.<br /><em>Discover the unexpected.</em></h1>
+        <p className="hero-lede">Unhurried conversations at the edge of consciousness, science, ancient history, and human potential—made for listeners willing to stay with the mystery.</p>
         <div className="conversion-actions">
-          <TrackedLink href="/membership" event="membership_cta_clicked" label="hero" className="radiant-button">Enter the membership <ArrowRight className="size-4" /></TrackedLink>
-          <TrackedLink href="/universe" event="universe_engaged" label="hero" className="ghost-button">Explore the Knowledge Universe <Sparkles className="size-4" /></TrackedLink>
+          <TrackedLink href="/universe" event="universe_engaged" label="hero" className="radiant-button">Explore the Archive <ArrowRight className="size-4" /></TrackedLink>
+          <EpisodePlayButton episode={featured} className="ghost-button"><Play className="size-4" fill="currentColor" /> Play the latest episode</EpisodePlayButton>
         </div>
-        <p className="hero-proof"><span>{episodes.length}</span> conversations across consciousness, science, healing, philosophy, and human potential.</p>
       </motion.div>
-      <div className="hero-transmission">
-        <div className="transmission-art">{featured.image && <img src={featured.image} alt="" />}<span>Latest transmission</span><button aria-label={`Play episode ${featured.number}`}><Play fill="currentColor" /></button></div>
-        <div className="transmission-meta"><small>Episode {featured.number} · {featured.date?.slice(0, 4)}</small><h2>{cleanTitle(featured.title)}</h2><a href={featured.audio ?? featured.url ?? "#"} target="_blank" rel="noreferrer">Listen now <ArrowRight className="size-4" /></a></div>
-      </div>
+      <div className="hero-proof"><span><b>{episodes.length}</b> conversations</span><span><b>12</b> years independent</span><span><b>∞</b> paths through the archive</span></div>
       <a href="#purpose" className="scroll-cue">Scroll to explore <span /></a>
+    </section>
+  );
+}
+
+function FeaturedTransmission() {
+  return (
+    <section className="hero-transmission-section" aria-label="Latest episode">
+      <div className="hero-transmission">
+        <div className="transmission-art">{featured.image && <img src={featured.image} alt="" />}<span>Latest transmission</span><EpisodePlayButton episode={featured}><Play fill="currentColor" /></EpisodePlayButton></div>
+        <div className="transmission-meta"><small>Now playing · Episode {featured.number}</small><h2>{cleanTitle(featured.title)}</h2><p>{featured.guest}</p><EpisodePlayButton episode={featured}>Listen <ArrowRight className="size-4" /></EpisodePlayButton></div>
+      </div>
     </section>
   );
 }
@@ -136,7 +148,7 @@ function Hero() {
 function TrustBand() {
   return (
     <section className="trust-band" aria-label="Notable podcast guests">
-      <p>Conversations with</p>
+      <p>192 conversations, including</p>
       <div>
         {trustedGuests.map((guest) => (
           <a
@@ -146,7 +158,7 @@ function TrustBand() {
             rel="noreferrer"
             aria-label={`Watch the ${guest.name} episode on YouTube`}
           >
-            {guest.name}
+            <strong>{guest.name}</strong><small>{guest.note}</small>
           </a>
         ))}
       </div>
@@ -185,7 +197,7 @@ function Featured() {
         <p>{featured.description}</p>
         <div className="topic-pills">{featured.topics.map((topic) => <span key={topic}>{topic}</span>)}</div>
         <div className="conversion-actions">
-          <a href={featured.audio ?? featured.url ?? "#"} target="_blank" rel="noreferrer" className="radiant-button"><Play className="size-4" fill="currentColor" /> Play the episode</a>
+          <EpisodePlayButton episode={featured} className="radiant-button"><Play className="size-4" fill="currentColor" /> Play the episode</EpisodePlayButton>
           <Link href="/universe" className="text-link">Follow this thread <ArrowRight className="size-4" /></Link>
         </div>
       </motion.div>
@@ -198,15 +210,22 @@ function KnowledgePortal() {
     <section className="knowledge-portal">
       <div className="portal-stars" aria-hidden="true">{Array.from({ length: 36 }, (_, i) => <i key={i} style={{ "--x": `${(i * 37) % 97}%`, "--y": `${(i * 61) % 91}%`, "--d": `${1 + (i % 4)}s` } as React.CSSProperties} />)}</div>
       <motion.div {...fade}>
-        <p className="conversion-kicker"><Sparkles className="size-4" /> The signature experience</p>
+        <p className="conversion-kicker"><Sparkles className="size-4" /> The living archive</p>
         <h2>One archive.<br />A universe of connections.</h2>
-        <p>Every glowing point is an episode. Every line traces a shared guest, theme, or question. Move through the work by curiosity rather than chronology.</p>
-        <TrackedLink href="/universe" event="universe_engaged" label="knowledge_portal" className="radiant-button">Enter the Knowledge Universe <ArrowRight className="size-4" /></TrackedLink>
+        <p>Every point is a conversation. Every line reveals a shared idea, guest, or question. Choose a path below—or enter the map and let curiosity decide what comes next.</p>
+        <div className="archive-tally" aria-label="Archive overview"><span><b>{episodes.length}</b> episodes</span><span><b>4</b> paths to begin</span><span><b>12</b> years of inquiry</span></div>
+        <TrackedLink href="/universe" event="universe_engaged" label="knowledge_portal" className="radiant-button">Explore the complete map <ArrowRight className="size-4" /></TrackedLink>
       </motion.div>
-      <div className="thread-list">
-        {threads.map((thread) => (
-          <article key={thread.name}>
+      <div className="archive-artifact">
+        <Link href="/universe" className="archive-core" aria-label="Enter the complete HXP archive">
+          <span>HXP</span><b>{episodes.length}</b><small>recorded<br />encounters</small><i />
+        </Link>
+        <div className="artifact-orbits" aria-hidden="true"><i /><i /><i /></div>
+        <div className="thread-list">
+        {threads.map((thread, index) => (
+          <article key={thread.name} style={{ "--thread-color": thread.color } as React.CSSProperties}>
             <header>
+              <span className="thread-number">0{index + 1}</span>
               <i style={{ background: thread.color, boxShadow: `0 0 22px ${thread.color}` }} />
               <span><b>{thread.name}</b><small>{thread.copy}</small></span>
             </header>
@@ -215,16 +234,17 @@ function KnowledgePortal() {
                 const episode = episodes.find((item) => item.number === number);
                 if (!episode) return null;
                 return (
-                  <a key={number} href={episode.audio ?? episode.url ?? "#"} target="_blank" rel="noreferrer">
+                  <EpisodePlayButton key={number} episode={episode}>
                     <span>EP {number}</span>
                     <b>{cleanTitle(episode.title)}</b>
                     <Play className="size-3" fill="currentColor" />
-                  </a>
+                  </EpisodePlayButton>
                 );
               })}
             </div>
           </article>
         ))}
+        </div>
       </div>
     </section>
   );
@@ -237,10 +257,10 @@ function EpisodeGrid() {
       <div className="conversion-episodes">
         {episodes.slice(0, 6).map((episode, index) => (
           <article key={episode.number} className={index === 0 ? "is-featured" : ""}>
-            <a href={episode.audio ?? episode.url ?? "#"} target="_blank" rel="noreferrer">
+            <EpisodePlayButton episode={episode} className="episode-play-card">
               <div className="episode-art">{episode.image && <img src={episode.image} alt="" />}<span>EP {episode.number}</span><i><Play className="size-4" fill="currentColor" /></i></div>
               <p>{episode.topics.slice(0, 2).join(" · ")}</p><h3>{cleanTitle(episode.title)}</h3><small>{episode.guest}</small>
-            </a>
+            </EpisodePlayButton>
             <FavoriteButton episodeNumber={episode.number} title={episode.title} />
           </article>
         ))}
@@ -275,8 +295,8 @@ function MembershipInvitation() {
 function Dispatch() {
   return (
     <section className="dispatch-section">
-      <div><p className="conversion-kicker">Not ready to join?</p><h2>Begin with one thoughtful dispatch.</h2><p>New conversations, archive notes, and membership updates—sent with restraint.</p></div>
-      <NewsletterForm />
+      <div><p className="conversion-kicker">A quieter kind of inbox</p><h2>Keep the question open.</h2><p>Receive a new conversation, one resurfaced idea from the archive, and a question worth carrying into your week.</p><small>No feed. No daily noise. Just the best of HXP, sent with restraint.</small></div>
+      <aside className="dispatch-invitation"><span>Join the HXP dispatch</span><p>A private note for the deeply curious.</p><NewsletterForm /><small>Occasional emails · Unsubscribe whenever you like</small></aside>
     </section>
   );
 }

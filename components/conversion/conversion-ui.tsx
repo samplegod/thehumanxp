@@ -91,10 +91,10 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
       <label>
         <Mail className="size-4" />
         <span className="sr-only">Email address</span>
-        <input name="email" type="email" required placeholder="Your email address" />
+        <input name="email" type="email" inputMode="email" autoComplete="email" required placeholder="you@example.com" />
       </label>
       <button type="submit" disabled={state === "loading"}>
-        {state === "loading" ? <LoaderCircle className="size-4 animate-spin" /> : <>Join the dispatch <ArrowRight className="size-4" /></>}
+        {state === "loading" ? <LoaderCircle className="size-4 animate-spin" /> : <>Send me the next note <ArrowRight className="size-4" /></>}
       </button>
       {message && <p className={state === "error" ? "is-error" : ""} role="status">{state === "success" ? <Check className="size-4" /> : <X className="size-4" />}{message}</p>}
     </form>

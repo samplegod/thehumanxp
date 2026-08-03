@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 
+import {
+  EpisodePlayerDock,
+  EpisodePlayerProvider,
+} from "@/components/player/episode-player";
+
 import "./globals.css";
+import "./home-polish.css";
 
 export const metadata: Metadata = {
-  title: "The Human Experience Podcast Membership",
+  title: "The Human Experience Podcast | Follow the Question",
   description:
-    "A premium membership platform for seekers exploring consciousness, science, healing, and human potential.",
+    "Independent long-form conversations exploring consciousness, science, ancient worlds, healing, philosophy, and human potential.",
 };
 
 export default function RootLayout({
@@ -34,7 +40,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-        {children}
+        <EpisodePlayerProvider>
+          {children}
+          <EpisodePlayerDock />
+        </EpisodePlayerProvider>
         <Analytics />
       </body>
     </html>
