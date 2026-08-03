@@ -1,4 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
@@ -12,6 +14,8 @@ const itemSchema = z.object({
 });
 const librarySchema = z.object({ updatedAt: z.string(), edition: z.string().min(1), items: z.array(itemSchema) });
 const filePath = path.join(process.cwd(), "content", "members", "library.json");
+const relativeFilePath = "content/members/library.json";
+const execFileAsync = promisify(execFile);
 
 function developmentOnly() {
   return process.env.NODE_ENV !== "production";
@@ -30,7 +34,22 @@ export async function PUT(request: Request) {
   if (new Set(slugs).size !== slugs.length) return NextResponse.json({ error: "Every release needs a unique slug." }, { status: 400 });
   const content = { ...parsed.data, updatedAt: new Date().toISOString().slice(0, 10) };
   await writeFile(filePath, `${JSON.stringify(content, null, 2)}\n`, "utf8");
-  revalidatePath("/members", "page");
-  revalidatePath("/members/[slug]", "page");
-  return NextResponse.json({ ok: true, library: content }, { headers: { "Cache-Control": "no-store" } });
+  console.info("[content-studio] wrote local dataset", { dataset: relativeFilePath, items: content.items.length });
+  try {
+    const { stdout } = await execFileAsync("git", ["diff", "--name-only", "hxp/main", "--", relativeFilePath], { cwd: process.cwd() });
+    const changed = stdout.trim() === relativeFilePath;
+    if (changed) {
+      await execFileAsync("git", ["add", "--", relativeFilePath], { cwd: process.cwd() });
+      await execFileAsync("git", ["-c", "user.name=samplegod", "-c", "user.email=samplegod@users.noreply.github.com", "commit", "--only", "-m", "Update members content from Content Studio", "--", relativeFilePath], { cwd: process.cwd() });
+      await execFileAsync("git", ["push", "hxp", "HEAD:main"], { cwd: process.cwd(), timeout: 30_000 });
+    }
+    console.info("[content-studio] saved and published", { dataset: relativeFilePath, changed, target: "hxp/main" });
+    revalidatePath("/members", "page");
+    revalidatePath("/members/[slug]", "page");
+    return NextResponse.json({ ok: true, library: content, published: true, changed }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : "Unknown Git publish error";
+    console.error("[content-studio] local write succeeded but publish failed", { dataset: relativeFilePath, detail });
+    return NextResponse.json({ error: "Saved locally, but publishing to GitHub failed. Check the local server log.", detail }, { status: 502 });
+  }
 }
