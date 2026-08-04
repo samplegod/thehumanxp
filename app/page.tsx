@@ -21,6 +21,7 @@ import {
   TrackedLink,
 } from "@/components/conversion/conversion-ui";
 import {
+  ContinueListeningShelf,
   EpisodePlayButton,
 } from "@/components/player/episode-player";
 import { episodes } from "@/lib/episodes";
@@ -86,6 +87,7 @@ export default function Home() {
       <Hero />
       <FeaturedTransmission />
       <TrustBand />
+      <ContinueListeningShelf />
       <Purpose />
       <KnowledgePortal />
       <EditorialFeature />
@@ -152,8 +154,8 @@ function FeaturedTransmission() {
 function TrustBand() {
   return (
     <section className="trust-band" aria-label="Notable podcast guests">
-      <p>192 conversations, including</p>
-      <div>
+      <p className="trust-band-label">192 conversations, including</p>
+      <div className="guest-scroll">
         {trustedGuests.map((guest) => (
           <a
             key={guest.name}
@@ -166,6 +168,7 @@ function TrustBand() {
           </a>
         ))}
       </div>
+      <p className="trust-scroll-note" aria-hidden="true"><span>Swipe to explore guests</span><i>↔</i></p>
     </section>
   );
 }
@@ -317,7 +320,7 @@ function Footer() {
       <div className="footer-mark"><span>HXP</span><p>The Human Experience Podcast<small>Independent conversations since 2013</small></p></div>
       <div><b>Explore</b><Link href="/universe">Knowledge Universe</Link><Link href="/top-episodes">Essential episodes</Link><Link href="/quotes">Quotes</Link><Link href="/membership">Membership</Link></div>
       <div><b>Listen</b><a href={featured.audio ?? "#"}>Latest episode</a><a href="https://open.spotify.com/show/40OXBmEF70PZQ9xeVz3515">Spotify</a><a href="https://www.youtube.com/channel/UCkr2vordfEQw9_sB8pvrGyA">YouTube</a></div>
-      <div><b>Information</b><a href="https://fev.laz.mybluehost.me/contact-2/">Contact</a><span>Secure checkout by Stripe</span><span>© 2026 HXP</span></div>
+      <div><b>Information</b><Link href="/testimonials">What people are saying</Link><a href="https://fev.laz.mybluehost.me/contact-2/">Contact</a><span>Secure checkout by Stripe</span><span>© 2026 HXP</span></div>
     </footer>
   );
 }
