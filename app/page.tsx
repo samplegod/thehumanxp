@@ -17,7 +17,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 import {
-  FavoriteButton,
   NewsletterForm,
   TrackedLink,
 } from "@/components/conversion/conversion-ui";
@@ -62,9 +61,14 @@ const threads = [
   },
 ];
 const principles = [
-  ["Explore without the algorithm", "Follow ideas, guests, and questions—not a feed designed to keep you scrolling.", Compass],
-  ["Return to the full conversation", "A 192-episode independent archive of patient, long-form inquiry.", Headphones],
-  ["Support work with depth", "Membership directly supports the care, research, and production behind future conversations.", Sparkles],
+  { title: "Explore without the algorithm", copy: "Follow themes, questions, and unexpected connections—not chronology, popularity, or a feed designed to keep you scrolling.", cta: "Choose a theme", href: "/discover", icon: Compass },
+  { title: "Return to the full conversation", copy: "Settle into featured, unhurried episodes selected for the depth of the exchange—not the speed of the takeaway.", cta: "Listen in full", href: "/long-form", icon: Headphones },
+  { title: "Support the work", copy: "Sustain independent conversations shaped by patience, research, and curiosity rather than an algorithm.", cta: "Become a member", href: "/membership", icon: Sparkles },
+];
+const editorialPath = [
+  { episode: episodes.find((item) => item.number === 191)!, chapter: "I", title: "Begin with the mind", note: "A neuroscientist follows the evidence beyond the boundaries of biology—and asks what awareness might be when the brain is no longer the whole story." },
+  { episode: episodes.find((item) => item.number === 189)!, chapter: "II", title: "Then question coincidence", note: "A psychiatrist treats synchronicity as a subject worthy of rigor, revealing how meaning enters the places where probability and lived experience meet." },
+  { episode: episodes.find((item) => item.number === 181)!, chapter: "III", title: "Return to the body", note: "A radical experiment in cold, breath, and attention becomes a study of resilience—and of capacities the modern world taught us to forget." },
 ];
 
 const fade = {
@@ -84,7 +88,7 @@ export default function Home() {
       <TrustBand />
       <Purpose />
       <KnowledgePortal />
-      <EpisodeGrid />
+      <EditorialFeature />
       <MembershipInvitation />
       <Dispatch />
       <Footer />
@@ -171,15 +175,22 @@ function Purpose() {
     <section id="purpose" className="conversion-section purpose-section">
       <motion.div {...fade}>
         <p className="conversion-kicker">For listeners who stay with the question</p>
-        <h2>A place for ideas that need more than a sound bite.</h2>
+        <h2>Choose how you&apos;d like to begin.</h2>
+        <p className="purpose-subtext">A place for ideas that need more than a soundbite.</p>
       </motion.div>
-      <div className="purpose-grid">
-        {principles.map(([title, copy, Icon], index) => (
-          <motion.div {...fade} transition={{ ...fade.transition, delay: index * .1 }} key={String(title)}>
-            <article>
-              <span>0{index + 1}</span><Icon className="size-5" />
-              <h3>{String(title)}</h3><p>{String(copy)}</p>
-            </article>
+      <div className="purpose-paths">
+        {principles.map(({ title, copy, cta, href, icon: Icon }, index) => (
+          <motion.div {...fade} transition={{ ...fade.transition, delay: index * .1 }} key={title}>
+            <Link href={href} className="purpose-path">
+              <span className="purpose-path-number">0{index + 1}</span>
+              <Icon className="purpose-path-icon" aria-hidden="true" />
+              <div className="purpose-path-copy">
+                <h3>{title}</h3>
+                <span className="purpose-path-line" aria-hidden="true" />
+                <p>{copy}</p>
+              </div>
+              <span className="purpose-path-cta">{cta}<ArrowRight aria-hidden="true" /></span>
+            </Link>
           </motion.div>
         ))}
       </div>
@@ -250,21 +261,20 @@ function KnowledgePortal() {
   );
 }
 
-function EpisodeGrid() {
+function EditorialFeature() {
+  const portrait = editorialPath[0].episode;
   return (
-    <section id="episodes" className="conversion-section">
-      <div className="section-heading"><div><p className="conversion-kicker">Continue your journey</p><h2>Signals from the archive.</h2></div><Link href="/top-episodes">View the essential episodes <ArrowRight className="size-4" /></Link></div>
-      <div className="conversion-episodes">
-        {episodes.slice(0, 6).map((episode, index) => (
-          <article key={episode.number} className={index === 0 ? "is-featured" : ""}>
-            <EpisodePlayButton episode={episode} className="episode-play-card">
-              <div className="episode-art">{episode.image && <img src={episode.image} alt="" />}<span>EP {episode.number}</span><i><Play className="size-4" fill="currentColor" /></i></div>
-              <p>{episode.topics.slice(0, 2).join(" · ")}</p><h3>{cleanTitle(episode.title)}</h3><small>{episode.guest}</small>
-            </EpisodePlayButton>
-            <FavoriteButton episodeNumber={episode.number} title={episode.title} />
-          </article>
-        ))}
+    <section id="episodes" className="editorial-dossier">
+      <div className="dossier-rule"><span>HXP · Editorial No. 01</span><span>Three entries into the archive</span></div>
+      <div className="dossier-opening">
+        <motion.div {...fade} className="dossier-title"><p className="conversion-kicker">A considered place to begin</p><h2>Three conversations.<br /><em>One human question.</em></h2></motion.div>
+        <div className="dossier-portrait">{portrait.image && <img src={portrait.image} alt={`Portrait of ${portrait.guest}`} />}<span>Plate 01</span></div>
+        <div className="dossier-essay"><span className="dossier-dropcap">W</span><p>What are we, beneath the explanations we inherit? The HXP archive has never offered one answer. It has made room for a more useful practice: moving between mind, meaning, and the intelligence of the body without forcing the mystery closed.</p><p>This short sequence is not a ranking. It is an editorial path—three encounters chosen because each changes the terms of the question that follows.</p><small>Selected from {episodes.length} independent conversations</small></div>
       </div>
+      <div className="dossier-chapters">
+        {editorialPath.map(({ episode, chapter, title, note }, index) => <motion.article {...fade} transition={{ ...fade.transition, delay: index * .08 }} key={episode.number}><div className="dossier-chapter-mark"><span>{chapter}</span><small>Episode {episode.number}</small></div><div className="dossier-chapter-copy"><p>{title}</p><h3>{cleanTitle(episode.title)}</h3><span>With {episode.guest}</span></div><p className="dossier-note">{note}</p><EpisodePlayButton episode={episode} className="dossier-listen"><Play fill="currentColor" /> Listen</EpisodePlayButton></motion.article>)}
+      </div>
+      <footer className="dossier-footer"><p><span>Further reading</span> Follow another question through the complete editorial index.</p><Link href="/top-episodes">Open the essential episodes <ArrowRight className="size-4" /></Link></footer>
     </section>
   );
 }
